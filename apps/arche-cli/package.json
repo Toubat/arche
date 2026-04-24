@@ -1,0 +1,17 @@
+{
+  "name": "arche-cli",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "bunx tsc -p tsconfig.json --noEmit",
+    "dev": "bun --watch index.ts",
+    "typecheck": "bunx tsc -p tsconfig.json --noEmit",
+    "lint": "bunx tsc -p tsconfig.json --noEmit",
+    "test": "bun test",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@arche/core": "workspace:*"
+  }
+}
