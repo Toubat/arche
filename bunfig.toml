@@ -1,0 +1,11 @@
+# Bun configuration — https://bun.sh/docs/runtime/bunfig
+# Install workspace devDependencies and hoist where possible.
+[install]
+exact = false
+
+[install.cache]
+disable = false
+
+# Use bun's built-in test runner for *.test.ts / *.spec.ts files.
+[test]
+coverage = false
