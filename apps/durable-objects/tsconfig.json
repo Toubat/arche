@@ -3,7 +3,10 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "types": ["bun"]
+    "types": ["@cloudflare/workers-types"],
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false
   },
   "include": ["src"]
 }

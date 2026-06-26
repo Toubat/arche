@@ -1,0 +1,25 @@
+{
+  "name": "durable-objects",
+  "version": "0.0.0",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260625.1",
+    "typescript": "^5.5.4",
+    "wrangler": "^4.104.0"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build:plugins": "bun run scripts/build-plugins.ts",
+    "cf-typegen": "wrangler types",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo *.tsbuildinfo .wrangler"
+  },
+  "type": "module",
+  "dependencies": {
+    "@ai-sdk/openai": "^3.0.74",
+    "ai": "^6.0.209",
+    "zod": "^4.4.3"
+  }
+}

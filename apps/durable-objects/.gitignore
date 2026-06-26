@@ -1,0 +1,4 @@
+.wrangler
+dist
+*.tsbuildinfo
+worker-configuration.d.ts
