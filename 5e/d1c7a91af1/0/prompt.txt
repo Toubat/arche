@@ -1,0 +1,1672 @@
+<git_diff_from_branch_to_main>
+  Relevant Diff: The following is the git diff from the current branch to the main/default branch:
+
+diff --git a/apps/web/tsconfig.json b/apps/web/tsconfig.json
+index ef6966a..3b32904 100644
+--- a/apps/web/tsconfig.json
++++ b/apps/web/tsconfig.json
+@@ -5,6 +5,5 @@
+     "rootDir": "src",
+     "types": ["bun"]
+   },
+-  "include": ["src"],
+-  "references": [{ "path": "../../packages/utils" }]
++  "include": ["src"]
+ }
+diff --git a/packages/utils/package.json b/packages/utils/package.json
+index 0bf493b..17b2265 100644
+--- a/packages/utils/package.json
++++ b/packages/utils/package.json
+@@ -5,14 +5,26 @@
+   "type": "module",
+   "exports": {
+     ".": {
+-      "types": "./src/index.ts",
+-      "default": "./src/index.ts"
++      "@repo/source": "./src/index.ts",
++      "bun": "./src/index.ts",
++      "types": "./dist/index.d.ts",
++      "import": "./dist/index.js",
++      "default": "./dist/index.js"
+     }
+   },
++  "main": "./dist/index.js",
++  "module": "./dist/index.js",
++  "types": "./dist/index.d.ts",
++  "files": [
++    "dist"
++  ],
++  "sideEffects": false,
+   "scripts": {
+     "build": "tsc --build",
++    "dev": "tsc --build --watch",
+     "check-types": "tsc --noEmit",
+-    "clean": "rm -rf dist .turbo *.tsbuildinfo"
++    "clean": "rm -rf dist .turbo *.tsbuildinfo",
++    "prepublishOnly": "bun run build"
+   },
+   "devDependencies": {
+     "typescript": "^5.5.4"
+diff --git a/tsconfig.base.json b/tsconfig.base.json
+index 0528ade..738cb4f 100644
+--- a/tsconfig.base.json
++++ b/tsconfig.base.json
+@@ -5,6 +5,7 @@
+     "lib": ["ES2022"],
+     "module": "ESNext",
+     "moduleResolution": "Bundler",
++    "customConditions": ["@repo/source"],
+     "composite": true,
+     "declaration": true,
+     "declarationMap": true,
+
+  </git_diff_from_branch_to_main>
+<timestamp>Thursday, Jun 25, 2026, 12:24 AM (UTC-7)</timestamp>
+
+Fetch https://developers.cloudflare.com/agent-setup/prompt.md
+
+---
+
+<git_diff_from_branch_to_main>
+  Relevant Diff: The following is the git diff from the current branch to the main/default branch:
+
+diff --git a/apps/web/tsconfig.json b/apps/web/tsconfig.json
+index ef6966a..3b32904 100644
+--- a/apps/web/tsconfig.json
++++ b/apps/web/tsconfig.json
+@@ -5,6 +5,5 @@
+     "rootDir": "src",
+     "types": ["bun"]
+   },
+-  "include": ["src"],
+-  "references": [{ "path": "../../packages/utils" }]
++  "include": ["src"]
+ }
+diff --git a/packages/utils/package.json b/packages/utils/package.json
+index 0bf493b..17b2265 100644
+--- a/packages/utils/package.json
++++ b/packages/utils/package.json
+@@ -5,14 +5,26 @@
+   "type": "module",
+   "exports": {
+     ".": {
+-      "types": "./src/index.ts",
+-      "default": "./src/index.ts"
++      "@repo/source": "./src/index.ts",
++      "bun": "./src/index.ts",
++      "types": "./dist/index.d.ts",
++      "import": "./dist/index.js",
++      "default": "./dist/index.js"
+     }
+   },
++  "main": "./dist/index.js",
++  "module": "./dist/index.js",
++  "types": "./dist/index.d.ts",
++  "files": [
++    "dist"
++  ],
++  "sideEffects": false,
+   "scripts": {
+     "build": "tsc --build",
++    "dev": "tsc --build --watch",
+     "check-types": "tsc --noEmit",
+-    "clean": "rm -rf dist .turbo *.tsbuildinfo"
++    "clean": "rm -rf dist .turbo *.tsbuildinfo",
++    "prepublishOnly": "bun run build"
+   },
+   "devDependencies": {
+     "typescript": "^5.5.4"
+diff --git a/tsconfig.base.json b/tsconfig.base.json
+index 0528ade..738cb4f 100644
+--- a/tsconfig.base.json
++++ b/tsconfig.base.json
+@@ -5,6 +5,7 @@
+     "lib": ["ES2022"],
+     "module": "ESNext",
+     "moduleResolution": "Bundler",
++    "customConditions": ["@repo/source"],
+     "composite": true,
+     "declaration": true,
+     "declarationMap": true,
+
+  </git_diff_from_branch_to_main>
+<timestamp>Thursday, Jun 25, 2026, 12:25 AM (UTC-7)</timestamp>
+
+I mainly use durable object
+
+---
+
+<git_diff_from_branch_to_main>
+  Relevant Diff: The following is the git diff from the current branch to the main/default branch:
+
+diff --git a/apps/web/tsconfig.json b/apps/web/tsconfig.json
+index ef6966a..3b32904 100644
+--- a/apps/web/tsconfig.json
++++ b/apps/web/tsconfig.json
+@@ -5,6 +5,5 @@
+     "rootDir": "src",
+     "types": ["bun"]
+   },
+-  "include": ["src"],
+-  "references": [{ "path": "../../packages/utils" }]
++  "include": ["src"]
+ }
+diff --git a/packages/utils/package.json b/packages/utils/package.json
+index 0bf493b..17b2265 100644
+--- a/packages/utils/package.json
++++ b/packages/utils/package.json
+@@ -5,14 +5,26 @@
+   "type": "module",
+   "exports": {
+     ".": {
+-      "types": "./src/index.ts",
+-      "default": "./src/index.ts"
++      "@repo/source": "./src/index.ts",
++      "bun": "./src/index.ts",
++      "types": "./dist/index.d.ts",
++      "import": "./dist/index.js",
++      "default": "./dist/index.js"
+     }
+   },
++  "main": "./dist/index.js",
++  "module": "./dist/index.js",
++  "types": "./dist/index.d.ts",
++  "files": [
++    "dist"
++  ],
++  "sideEffects": false,
+   "scripts": {
+     "build": "tsc --build",
++    "dev": "tsc --build --watch",
+     "check-types": "tsc --noEmit",
+-    "clean": "rm -rf dist .turbo *.tsbuildinfo"
++    "clean": "rm -rf dist .turbo *.tsbuildinfo",
++    "prepublishOnly": "bun run build"
+   },
+   "devDependencies": {
+     "typescript": "^5.5.4"
+diff --git a/tsconfig.base.json b/tsconfig.base.json
+index 0528ade..738cb4f 100644
+--- a/tsconfig.base.json
++++ b/tsconfig.base.json
+@@ -5,6 +5,7 @@
+     "lib": ["ES2022"],
+     "module": "ESNext",
+     "moduleResolution": "Bundler",
++    "customConditions": ["@repo/source"],
+     "composite": true,
+     "declaration": true,
+     "declarationMap": true,
+
+  </git_diff_from_branch_to_main>
+<timestamp>Thursday, Jun 25, 2026, 12:27 AM (UTC-7)</timestamp>
+
+done docs\
+
+---
+
+<external_links>
+### Potentially Relevant Websearch Results
+
+You should respond as if these information are known to you. Refrain from saying "I am unable to browse the internet" or "I don't have access to the internet" or "I'm unable to provide real-time news updates". This is your internet search results. Please always cite any links you referenced from the above search results in your response in markdown format.
+
+-------
+Website URL: https://developers.cloudflare.com/durable-objects/get-started/
+Website Title: Getting started
+Website Content:
+---
+title: Getting started
+description: Create and deploy your first Durable Object with SQLite storage and a companion Worker.
+image: https://developers.cloudflare.com/dev-products-preview.png
+---
+
+> Documentation Index  
+> Fetch the complete documentation index at: https://developers.cloudflare.com/durable-objects/llms.txt  
+> Use this file to discover all available pages before exploring further. 
+
+[Skip to content](#%5Ftop) 
+
+# Getting started
+
+This guide will instruct you through:
+
+* Writing a JavaScript class that defines a Durable Object.
+* Using Durable Objects SQL API to query a Durable Object's private, embedded SQLite database.
+* Instantiating and communicating with a Durable Object from another Worker.
+* Deploying a Durable Object and a Worker that communicates with a Durable Object.
+
+If you wish to learn more about Durable Objects, refer to [What are Durable Objects?](https://developers.cloudflare.com/durable-objects/concepts/what-are-durable-objects/).
+
+## Quick start
+
+If you want to skip the steps and get started quickly, click on the button below.
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/hello-world-do-template)
+
+This creates a repository in your GitHub account and deploys the application to Cloudflare Workers. Use this option if you are familiar with Cloudflare Workers, and wish to skip the step-by-step guidance.
+
+You may wish to manually follow the steps if you are new to Cloudflare Workers.
+
+## Prerequisites
+
+1. Sign up for a [Cloudflare account ↗](https://dash.cloudflare.com/sign-up/workers-and-pages).
+2. Install [Node.js ↗](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+
+Node.js version manager
+
+Use a Node version manager like [Volta ↗](https://volta.sh/) or [nvm ↗](https://github.com/nvm-sh/nvm) to avoid permission issues and change Node.js versions. [Wrangler](https://developers.cloudflare.com/workers/wrangler/install-and-update/), discussed later in this guide, requires a Node version of `16.17.0` or later.
+
+## 1\. Create a Worker project
+
+You will access your Durable Object from a [Worker](https://developers.cloudflare.com/workers/). Your Worker application is an interface to interact with your Durable Object.
+
+To create a Worker project, run:
+
+ npm  yarn  pnpm 
+
+```
+npm create cloudflare@latest -- durable-object-starter
+```
+
+```
+yarn create cloudflare durable-object-starter
+```
+
+```
+pnpm create cloudflare@latest durable-object-starter
+```
+
+Running `create cloudflare@latest` will install [Wrangler](https://developers.cloudflare.com/workers/wrangler/install-and-update/), the Workers CLI. You will use Wrangler to test and deploy your project.
+
+For setup, select the following options:
+
+* For _What would you like to start with?_, choose `Hello World example`.
+* For _Which template would you like to use?_, choose `Worker + Durable Objects`.
+* For _Which language do you want to use?_, choose `TypeScript`.
+* For _Do you want to use git for version control?_, choose `Yes`.
+* For _Do you want to deploy your application?_, choose `No` (we will be making some changes before deploying).
+
+This will create a new directory, which will include either a `src/index.js` or `src/index.ts` file to write your code and a [wrangler.jsonc](https://developers.cloudflare.com/workers/wrangler/configuration/) configuration file.
+
+Move into your new directory:
+
+Terminal window
+
+```
+cd durable-object-starter
+```
+
+Adding a Durable Object to an existing Worker
+
+To add a Durable Object to an existing Worker, you need to:
+
+* Modify the code of the existing Worker to include the following:  
+TypeScript  
+```  
+export class MyDurableObject extends DurableObject<Env> {  constructor(ctx: DurableObjectState, env: Env) {    // Required, as we're extending the base class.    super(ctx, env)  }  
+  {/* Define your Durable Object methods here */}  
+}  
+export default {  async fetch(request, env, ctx): Promise<Response> {    const stub = env.MY_DURABLE_OBJECT.getByName(new URL(request.url).pathname);  
+    {/* Access your Durable Object methods here */}  
+  },} satisfies ExportedHandler<Env>;  
+```
+* Update the Wrangler configuration file of your existing Worker to bind the Durable Object to the Worker.
+
+## 2\. Write a Durable Object class using SQL API
+
+Before you create and access a Durable Object, its behavior must be defined by an ordinary exported JavaScript class.
+
+Note
+
+If you do not use JavaScript or TypeScript, you will need a [shim ↗](https://developer.mozilla.org/en-US/docs/Glossary/Shim) to translate your class definition to a JavaScript class.
+
+Your `MyDurableObject` class will have a constructor with two parameters. The first parameter, `ctx`, passed to the class constructor contains state specific to the Durable Object, including methods for accessing storage. The second parameter, `env`, contains any bindings you have associated with the Worker when you uploaded it.
+
+* [  JavaScript ](#tab-panel-8487)
+* [  TypeScript ](#tab-panel-8488)
+* [  Python ](#tab-panel-8489)
+
+JavaScript
+
+```
+export class MyDurableObject extends DurableObject {  constructor(ctx, env) {    // Required, as we're extending the base class.    super(ctx, env);  }}
+```
+
+TypeScript
+
+```
+export class MyDurableObject extends DurableObject<Env> {  constructor(ctx: DurableObjectState, env: Env) {    // Required, as we're extending the base class.    super(ctx, env)  }}
+```
+
+Python
+
+```
+from workers import DurableObject
+class MyDurableObject(DurableObject):    def __init__(self, ctx, env):        super().__init__(ctx, env)
+```
+
+Workers communicate with a Durable Object using [remote-procedure call](https://developers.cloudflare.com/workers/runtime-apis/rpc/#%5Ftop). Public methods on a Durable Object class are exposed as [RPC methods](https://developers.cloudflare.com/durable-objects/best-practices/create-durable-object-stubs-and-send-requests/) to be called by another Worker.
+
+Your file should now look like:
+
+* [  JavaScript ](#tab-panel-8493)
+* [  TypeScript ](#tab-panel-8494)
+* [  Python ](#tab-panel-8495)
+
+JavaScript
+
+```
+export class MyDurableObject extends DurableObject {  constructor(ctx, env) {    // Required, as we're extending the base class.    super(ctx, env);  }
+  async sayHello() {    let result = this.ctx.storage.sql      .exec("SELECT 'Hello, World!' as greeting")      .one();    return result.greeting;  }}
+```
+
+TypeScript
+
+```
+export class MyDurableObject extends DurableObject<Env> {  constructor(ctx: DurableObjectState, env: Env) {    // Required, as we're extending the base class.    super(ctx, env)  }
+    async sayHello(): Promise<string> {      let result = this.ctx.storage.sql        .exec("SELECT 'Hello, World!' as greeting")        .one();      return result.greeting;    }
+}
+```
+
+Python
+
+```
+from workers import DurableObject
+class MyDurableObject(DurableObject):    async def say_hello(self):        result = self.ctx.storage.sql.exec(            "SELECT 'Hello, World!' as greeting"        ).one()
+        return result.greeting
+```
+
+In the code above, you have:
+
+1. Defined a RPC method, `sayHello()`, that can be called by a Worker to communicate with a Durable Object.
+2. Accessed a Durable Object's attached storage, which is a private SQLite database only accessible to the object, using [SQL API](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/#exec) methods (`sql.exec()`) available on `ctx.storage` .
+3. Returned an object representing the single row query result using `one()`, which checks that the query result has exactly one row.
+4. Return the `greeting` column from the row object result.
+
+## 3\. Instantiate and communicate with a Durable Object
+
+Note
+
+Durable Objects do not receive requests directly from the Internet. Durable Objects receive requests from Workers or other Durable Objects. This is achieved by configuring a binding in the calling Worker for each Durable Object class that you would like it to be able to talk to. These bindings must be configured at upload time. Methods exposed by the binding can be used to communicate with particular Durable Objects.
+
+A Worker is used to [access Durable Objects](https://developers.cloudflare.com/durable-objects/best-practices/create-durable-object-stubs-and-send-requests/).
+
+To communicate with a Durable Object, the Worker's fetch handler should look like the following:
+
+* [  JavaScript ](#tab-panel-8490)
+* [  TypeScript ](#tab-panel-8491)
+* [  Python ](#tab-panel-8492)
+
+JavaScript
+
+```
+export default {  async fetch(request, env, ctx) {    const stub = env.MY_DURABLE_OBJECT.getByName(new URL(request.url).pathname);
+    const greeting = await stub.sayHello();
+    return new Response(greeting);  },};
+```
+
+TypeScript
+
+```
+export default {  async fetch(request, env, ctx): Promise<Response> {      const stub = env.MY_DURABLE_OBJECT.getByName(new URL(request.url).pathname);
+      const greeting = await stub.sayHello();
+      return new Response(greeting);    },
+} satisfies ExportedHandler<Env>;
+```
+
+Python
+
+```
+from workers import handler, Response, WorkerEntrypointfrom urllib.parse import urlparse
+class Default(WorkerEntrypoint):    async def fetch(request):        url = urlparse(request.url)        stub = self.env.MY_DURABLE_OBJECT.getByName(url.path)        greeting = await stub.say_hello()        return Response(greeting)
+```
+
+In the code above, you have:
+
+1. Exported your Worker's main event handlers, such as the `fetch()` handler for receiving HTTP requests.
+2. Passed `env` into the `fetch()` handler. Bindings are delivered as a property of the environment object passed as the second parameter when an event handler or class constructor is invoked.
+3. Constructed a stub for a Durable Object instance based on the provided name. A stub is a client object used to send messages to the Durable Object.
+4. Called a Durable Object by invoking a RPC method, `sayHello()`, on the Durable Object, which returns a `Hello, World!` string greeting.
+5. Received an HTTP response back to the client by constructing a HTTP Response with `return new Response()`.
+
+Refer to [Access a Durable Object from a Worker](https://developers.cloudflare.com/durable-objects/best-practices/create-durable-object-stubs-and-send-requests/) to learn more about communicating with a Durable Object.
+
+## 4\. Configure Durable Object bindings
+
+[Bindings](https://developers.cloudflare.com/workers/runtime-apis/bindings/) allow your Workers to interact with resources on the Cloudflare developer platform. The Durable Object bindings in your Worker project's [Wrangler configuration file](https://developers.cloudflare.com/workers/wrangler/configuration/) will include a binding name (for this guide, use `MY_DURABLE_OBJECT`) and the class name (`MyDurableObject`).
+
+* [  wrangler.jsonc ](#tab-panel-8483)
+* [  wrangler.toml ](#tab-panel-8484)
+
+JSONC
+
+```
+{  "durable_objects": {    "bindings": [      {        "name": "MY_DURABLE_OBJECT",        "class_name": "MyDurableObject"      }    ]  }}
+```
+
+TOML
+
+```
+[[durable_objects.bindings]]name = "MY_DURABLE_OBJECT"class_name = "MyDurableObject"
+```
+
+The `bindings` section contains the following fields:
+
+* `name` \- Required. The binding name to use within your Worker.
+* `class_name` \- Required. The class name you wish to bind to.
+* `script_name` \- Optional. Defaults to the current [environment's](https://developers.cloudflare.com/durable-objects/reference/environments/) Worker code.
+
+## 5\. Configure Durable Object class with SQLite storage backend
+
+A migration is a mapping process from a class name to a runtime state. You perform a migration when creating a new Durable Object class, or when renaming, deleting or transferring an existing Durable Object class.
+
+Migrations are performed through the `[[migrations]]` configurations key in your Wrangler file.
+
+The Durable Object migration to create a new Durable Object class with SQLite storage backend will look like the following in your Worker's Wrangler file:
+
+* [  wrangler.jsonc ](#tab-panel-8485)
+* [  wrangler.toml ](#tab-panel-8486)
+
+JSONC
+
+```
+{  "migrations": [    {      "tag": "v1", // Should be unique for each entry      "new_sqlite_classes": [ // Array of new classes        "MyDurableObject"      ]    }  ]}
+```
+
+TOML
+
+```
+[[migrations]]tag = "v1"new_sqlite_classes = [ "MyDurableObject" ]
+```
+
+Refer to [Durable Objects migrations](https://developers.cloudflare.com/durable-objects/reference/durable-objects-migrations/) to learn more about the migration process.
+
+## 6\. Develop a Durable Object Worker locally
+
+To test your Durable Object locally, run [wrangler dev](https://developers.cloudflare.com/workers/wrangler/commands/general/#dev):
+
+Terminal window
+
+```
+npx wrangler dev
+```
+
+In your console, you should see a`Hello world` string returned by the Durable Object.
+
+## 7\. Deploy your Durable Object Worker
+
+To deploy your Durable Object Worker:
+
+Terminal window
+
+```
+npx wrangler deploy
+```
+
+Once deployed, you should be able to see your newly created Durable Object Worker on the Cloudflare dashboard.
+
+[ Go to **Workers & Pages** ](https://dash.cloudflare.com/?to=/:account/workers-and-pages) 
+
+Preview your Durable Object Worker at `<YOUR_WORKER>.<YOUR_SUBDOMAIN>.workers.dev`.
+
+## Summary and final code
+
+Your final code should look like this:
+
+* [  JavaScript ](#tab-panel-8496)
+* [  TypeScript ](#tab-panel-8497)
+* [  Python ](#tab-panel-8498)
+
+JavaScript
+
+```
+import { DurableObject } from "cloudflare:workers";export class MyDurableObject extends DurableObject {  constructor(ctx, env) {    // Required, as we are extending the base class.    super(ctx, env);  }
+  async sayHello() {    let result = this.ctx.storage.sql      .exec("SELECT 'Hello, World!' as greeting")      .one();    return result.greeting;  }}export default {  async fetch(request, env, ctx) {    const stub = env.MY_DURABLE_OBJECT.getByName(new URL(request.url).pathname);
+    const greeting = await stub.sayHello();
+    return new Response(greeting);  },};
+```
+
+TypeScript
+
+```
+import { DurableObject } from "cloudflare:workers";export class MyDurableObject extends DurableObject<Env> {  constructor(ctx: DurableObjectState, env: Env) {    // Required, as we are extending the base class.    super(ctx, env)  }
+    async sayHello():Promise<string> {      let result = this.ctx.storage.sql        .exec("SELECT 'Hello, World!' as greeting")        .one();      return result.greeting;    }
+}export default {async fetch(request, env, ctx): Promise<Response> {const stub = env.MY_DURABLE_OBJECT.getByName(new URL(request.url).pathname);
+      const greeting = await stub.sayHello();
+      return new Response(greeting);    },
+} satisfies ExportedHandler<Env>;
+```
+
+Python
+
+```
+from workers import DurableObject, handler, Responsefrom urllib.parse import urlparse
+class MyDurableObject(DurableObject):    async def say_hello(self):        result = self.ctx.storage.sql.exec(            "SELECT 'Hello, World!' as greeting"        ).one()
+        return result.greeting
+class Default(WorkerEntrypoint):    async def fetch(self, request):        url = urlparse(request.url)        stub = self.env.MY_DURABLE_OBJECT.getByName(url.path)        greeting = await stub.say_hello()        return Response(greeting)
+```
+
+By finishing this tutorial, you have:
+
+* Successfully created a Durable Object
+* Called the Durable Object by invoking a [RPC method](https://developers.cloudflare.com/workers/runtime-apis/rpc/)
+* Deployed the Durable Object globally
+
+## Related resources
+
+* [Create Durable Object stubs](https://developers.cloudflare.com/durable-objects/best-practices/create-durable-object-stubs-and-send-requests/)
+* [Access Durable Objects Storage](https://developers.cloudflare.com/durable-objects/best-practices/access-durable-objects-storage/)
+* [Miniflare ↗](https://github.com/cloudflare/workers-sdk/tree/main/packages/miniflare) \- Helpful tools for mocking and testing your Durable Objects.
+
+```json
+{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/durable-objects/get-started/#page","headline":"Getting started · Cloudflare Durable Objects docs","description":"Create and deploy your first Durable Object with SQLite storage and a companion Worker.","url":"https://developers.cloudflare.com/durable-objects/get-started/","inLanguage":"en","image":"https://developers.cloudflare.com/dev-products-preview.png","dateModified":"2026-04-21","publisher":{"@type":"Organization","name":"Cloudflare","url":"https://www.cloudflare.com/"},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"/directory/","name":"Directory"}},{"@type":"ListItem","position":2,"item":{"@id":"/durable-objects/","name":"Durable Objects"}},{"@type":"ListItem","position":3,"item":{"@id":"/durable-objects/get-started/","name":"Getting started"}}]}
+```
+
+____
+
+</external_links>
+<git_diff_from_branch_to_main>
+  Relevant Diff: The following is the git diff from the current branch to the main/default branch:
+
+diff --git a/apps/web/tsconfig.json b/apps/web/tsconfig.json
+index ef6966a..3b32904 100644
+--- a/apps/web/tsconfig.json
++++ b/apps/web/tsconfig.json
+@@ -5,6 +5,5 @@
+     "rootDir": "src",
+     "types": ["bun"]
+   },
+-  "include": ["src"],
+-  "references": [{ "path": "../../packages/utils" }]
++  "include": ["src"]
+ }
+diff --git a/packages/utils/package.json b/packages/utils/package.json
+index 0bf493b..17b2265 100644
+--- a/packages/utils/package.json
++++ b/packages/utils/package.json
+@@ -5,14 +5,26 @@
+   "type": "module",
+   "exports": {
+     ".": {
+-      "types": "./src/index.ts",
+-      "default": "./src/index.ts"
++      "@repo/source": "./src/index.ts",
++      "bun": "./src/index.ts",
++      "types": "./dist/index.d.ts",
++      "import": "./dist/index.js",
++      "default": "./dist/index.js"
+     }
+   },
++  "main": "./dist/index.js",
++  "module": "./dist/index.js",
++  "types": "./dist/index.d.ts",
++  "files": [
++    "dist"
++  ],
++  "sideEffects": false,
+   "scripts": {
+     "build": "tsc --build",
++    "dev": "tsc --build --watch",
+     "check-types": "tsc --noEmit",
+-    "clean": "rm -rf dist .turbo *.tsbuildinfo"
++    "clean": "rm -rf dist .turbo *.tsbuildinfo",
++    "prepublishOnly": "bun run build"
+   },
+   "devDependencies": {
+     "typescript": "^5.5.4"
+diff --git a/tsconfig.base.json b/tsconfig.base.json
+index 0528ade..738cb4f 100644
+--- a/tsconfig.base.json
++++ b/tsconfig.base.json
+@@ -5,6 +5,7 @@
+     "lib": ["ES2022"],
+     "module": "ESNext",
+     "moduleResolution": "Bundler",
++    "customConditions": ["@repo/source"],
+     "composite": true,
+     "declaration": true,
+     "declarationMap": true,
+
+  </git_diff_from_branch_to_main>
+<timestamp>Thursday, Jun 25, 2026, 12:28 AM (UTC-7)</timestamp>
+
+https://developers.cloudflare.com/durable-objects/get-started/ start a durable object project under @apps/
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 12:37 AM (UTC-7)</timestamp>
+
+make sayHelllo to be stateful, like incrementing a counter. So every call I see different value
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 12:38 AM (UTC-7)</timestamp>
+
+You have access to local Cloudflare services (KV, R2, D1, Durable Objects, and Workflows) for this app via the Explorer API.
+API endpoint: http://localhost:8787/cdn-cgi/explorer/api
+Fetch the OpenAPI schema from http://localhost:8787/cdn-cgi/explorer/api to discover available operations. Use these endpoints to list, query, and manage local resources during development.
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 12:41 AM (UTC-7)</timestamp>
+
+you forgot to create the table傻逼
+
+---
+
+[Image]
+<image_files>
+The following images were provided by the user and saved to the workspace for future use:
+1. /Users/toubatbrian/.cursor/projects/Users-toubatbrian-Documents-GitHub-arche/assets/Screenshot_2026-06-25_at_00.43.14-750e69f2-efc8-420a-aa79-f45b2be469f6.png
+
+These images can be copied for use in other locations.
+</image_files>
+<timestamp>Thursday, Jun 25, 2026, 12:43 AM (UTC-7)</timestamp>
+
+what does Studio mean
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 12:45 AM (UTC-7)</timestamp>
+
+Are you sure the KVA storage cannot be used? If I build a coding agent like Claude Code, but I want to have a central coordination control plane run on the user's laptop, is it possible to bundle the app that contains the durable object and everything has been executed on the user's local laptop?
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 12:50 AM (UTC-7)</timestamp>
+
+What I want is to publish a package where users can use it locally, but they also can use our cloud-hosted version. Which means that, for an individual user, setting up on their local laptop is the easiest path, but they can also use the cloud version, for example, if it is an enterprise where there are multiple clients connecting to the central coordinator.Also, can you verify the KV storage by extending this myDurable object with another test function?
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 12:57 AM (UTC-7)</timestamp>
+
+If I build my own agent package inside the @packages/ And I want to import that to the durable object. Is that possible?
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 1:05 AM (UTC-7)</timestamp>
+
+What is Workrd?
+Can I do a cron job or scheduled the stuff in the durable object? For example, in my control plane, I want to run certain background tasks that might emit certain things to my agent for my own build agent package, and is that possible?
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 1:09 AM (UTC-7)</timestamp>
+
+What are the constraints of Worker D that it does not have? If my core agent to loop only involves calling the model API plus some orchestration layer, and every two logic, for example, will invoke something else that will be of the form of an API, so it does not touch the file system in that case, does it work?
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 1:11 AM (UTC-7)</timestamp>
+
+Does the durable object in the local work with dynamic worker? Meaning that there is arbitrary code in the form of durable objects that can be sent and executed dynamically
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 1:15 AM (UTC-7)</timestamp>
+
+Several questions:
+1. Can parent and child durable objects interact with each other?
+2. Can you show a test example of having a dynamic durable object?
+3. What dependency does the dynamic worker have? Does it have all the agent dependencies that the main orchestration has?
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 1:15 AM (UTC-7)</timestamp>
+
+Do not guess
+
+---
+
+Your previous response was interrupted. Continue from where you left off.
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 1:30 AM (UTC-7)</timestamp>
+
+don't make it an example, make it part of @apps/durable-objects/src/index.ts !!!!! You can create other files to group and modularize code you dumb! and also try the capabilities one
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 1:34 AM (UTC-7)</timestamp>
+
+@apps/durable-objects/examples I don't like example folder if that make sense. Don't create 2 app. Just one demo app
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 1:40 AM (UTC-7)</timestamp>
+
+use wrangler.toml not jsonc
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 1:41 AM (UTC-7)</timestamp>
+
+Briefly inform the user about the task result and perform any follow-up actions (if needed).
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:01 AM (UTC-7)</timestamp>
+
+Try to import FS from the dynamic agent code and check what's the error.
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:04 AM (UTC-7)</timestamp>
+
+You have access to local Cloudflare services (KV, R2, D1, Durable Objects, and Workflows) for this app via the Explorer API.
+API endpoint: http://localhost:8787/cdn-cgi/explorer/api
+Fetch the OpenAPI schema from http://localhost:8787/cdn-cgi/explorer/api to discover available operations. Use these endpoints to list, query, and manage local resources during development.
+
+Run a dynamic worker and a durable object
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:06 AM (UTC-7)</timestamp>
+
+invoke durable object "demo" ten more times, with sleep 1 in between
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:07 AM (UTC-7)</timestamp>
+
+no, invoke plane
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:09 AM (UTC-7)</timestamp>
+
+Is it possible to install a dependency like zod schema for cell AISDK as part of the durable object? I don't know if those packages contain something relevant to a node that does not work with durable object.
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:10 AM (UTC-7)</timestamp>
+
+You don't need to set up tests. I also wonder if I enable nodejs_compact, what will happen?
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:21 AM (UTC-7)</timestamp>
+
+If my agent supports user plugins and we use their plugins, they can utilize some of the framework's internal API, but they can also install the node packages. I want to mount their plugin maybe as a dynamic worker. In that case, the way this will be is that the user will have a plugin folder, and under that folder there's package.json. There are several files to be exported, and there is index.ts for the export default. For our durable object, we will import their default exported object and then register their plugin in this way. How can we do so in a dynamic plugin registration way? Is it possible to do so using durable objects? This is kind of similar to what PyAgent does, using a just-in-time way to load extra TypeScript plug-ins into the PyAgent as plug-ins, but I'm not sure if my way can do so as well.
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:29 AM (UTC-7)</timestamp>
+
+Can you create a very simple API for that? Also create an example plugin. Just for demonstration purposes. Restricting to pre-bundle is fine. Plugin can expose functionality, for example, Add Tool and the hook on before, let's say, turn start, before turn ends. And load this plugin and test if the hooks are being invoked. Your agent loop currently can be a marked one. Because just for demonstration purpose
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:57 AM (UTC-7)</timestamp>
+
+Briefly inform the user about the task result and perform any follow-up actions (if needed).
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:57 AM (UTC-7)</timestamp>
+
+Briefly inform the user about the task result and perform any follow-up actions (if needed).
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:57 AM (UTC-7)</timestamp>
+
+Briefly inform the user about the task result and perform any follow-up actions (if needed).
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:57 AM (UTC-7)</timestamp>
+
+Briefly inform the user about the task result and perform any follow-up actions (if needed).
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:57 AM (UTC-7)</timestamp>
+
+Briefly inform the user about the task result and perform any follow-up actions (if needed).
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:57 AM (UTC-7)</timestamp>
+
+Briefly inform the user about the task result and perform any follow-up actions (if needed).
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:57 AM (UTC-7)</timestamp>
+
+Briefly inform the user about the task result and perform any follow-up actions (if needed).
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 2:57 AM (UTC-7)</timestamp>
+
+Briefly inform the user about the task result and perform any follow-up actions (if needed).
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:00 AM (UTC-7)</timestamp>
+
+So TLDR, what is the issue?
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:02 AM (UTC-7)</timestamp>
+
+为啥我他妈的还需要 reboot 啊？为啥他妈逼的 kill 不了？
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:03 AM (UTC-7)</timestamp>
+
+我不管，他妈了个逼的，你给我 kill 掉，傻逼。
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:04 AM (UTC-7)</timestamp>
+
+为什么会出现这种 fucking 情况啊？我他妈这辈子没有遇见过。
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:09 AM (UTC-7)</timestamp>
+
+这个东西是不是一直会发生？This is all assed up, aga这是不是 OS 的 bug？
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:10 AM (UTC-7)</timestamp>
+
+帮我清理一下 disk 看看他妈啥鸡巴玩意儿占用了这么多。
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:12 AM (UTC-7)</timestamp>
+
+uninstall unreal engine
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:15 AM (UTC-7)</timestamp>
+
+Document 帮我看一看什么占大头。
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:20 AM (UTC-7)</timestamp>
+
+意思是我就算清理了内存，我还是得重启？也顺手帮我看一下 library 的缓存吧。
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:24 AM (UTC-7)</timestamp>
+
+restarted
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:27 AM (UTC-7)</timestamp>
+
+停掉吧。
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:28 AM (UTC-7)</timestamp>
+
+Briefly inform the user about the task result and perform any follow-up actions (if needed).
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 12:48 PM (UTC-7)</timestamp>
+
+Check how @opencode/packages/opencode/bin/opencode uses cloud flare tech
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 12:59 PM (UTC-7)</timestamp>
+
+where is DOs code?
+
+---
+
+<uploaded_documents>
+The following documents have been saved to your filesystem. You can read them using your file-reading tool or other tools:
+- /Users/toubatbrian/.cursor/projects/Users-toubatbrian-Documents-GitHub-arche/uploads/server-0.md
+</uploaded_documents>
+<timestamp>Thursday, Jun 25, 2026, 1:01 PM (UTC-7)</timestamp>
+
+What is the purpose of it? And how to use open code on server side? i.e. https://opencode.ai/docs/server/ 
+
+Trying to understand their architecture so I can better build mine
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 1:16 PM (UTC-7)</timestamp>
+
+sure
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 1:26 PM (UTC-7)</timestamp>
+
+sure
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 3:59 PM (UTC-7)</timestamp>
+
+If open code web socket channel is not in the durable object for example, the one you mentioned about event bus. Where, for the client-server, for the open code running on a server, how does the connection work? Can you draw me an architecture diagram? Can you explain how the event bus is being built in open code? Does that allow multiple clients to concurrently listen to the same underlying identical string and have the ability to resume disconnected? So, for example, if the agent already started doing some work and has already streamed a certain part, like a conversation message part and the result part, and they're still streaming. If one of the clients joins in the middle, can the client pick up all the existing parts and listen to the active streaming as well from the events?
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 4:20 PM (UTC-7)</timestamp>
+
+>  (no EventSequenceTable optimistic-concurrency dance opencode needs because it has multiple writers/instances)
+
+what does this mean?
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 4:28 PM (UTC-7)</timestamp>
+
+can I select .... for update to lock it
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 4:33 PM (UTC-7)</timestamp>
+
+不是，我不明白为啥 open code 它，它有 multiple writer 啊？它难道不也是 `depends on only one dB for one specific session` 吗？
+
+---
+
+<hooks_context description="Additional context provided by session hooks. This may include project-specific information, configuration, or instructions from the user's hooks setup.">
+<EXTREMELY_IMPORTANT>
+You have superpowers.
+
+**Below is the full content of your 'superpowers:using-superpowers' skill - your introduction to using skills. For all other skills, use the 'Skill' tool:**
+
+---
+name: using-superpowers
+description: Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions
+---
+
+<SUBAGENT-STOP>
+If you were dispatched as a subagent to execute a specific task, skip this skill.
+</SUBAGENT-STOP>
+
+<EXTREMELY-IMPORTANT>
+If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
+
+IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
+
+This is not negotiable. This is not optional. You cannot rationalize your way out of this.
+</EXTREMELY-IMPORTANT>
+
+## Instruction Priority
+
+Superpowers skills override default system prompt behavior, but **user instructions always take precedence**:
+
+1. **User's explicit instructions** (CLAUDE.md, GEMINI.md, AGENTS.md, direct requests) — highest priority
+2. **Superpowers skills** — override default system behavior where they conflict
+3. **Default system prompt** — lowest priority
+
+If CLAUDE.md, GEMINI.md, or AGENTS.md says "don't use TDD" and a skill says "always use TDD," follow the user's instructions. The user is in control.
+
+## How to Access Skills
+
+**Never read skill files manually with file tools** — always use your platform's skill-loading mechanism so the skill is properly activated.
+
+**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you — follow it directly.
+
+**In Codex:** Skills load natively. Follow the instructions presented when a skill activates.
+
+**In Copilot CLI:** Use the `skill` tool. Skills are auto-discovered from installed plugins.
+
+**In Gemini CLI:** Skills activate via the `activate_skill` tool. Gemini loads skill metadata at session start and activates the full content on demand.
+
+**In other environments:** Check your platform's documentation for how skills are loaded.
+
+## Platform Adaptation
+
+Skills speak in actions ("dispatch a subagent", "create a todo", "read a file") rather than naming any one runtime's tools. For per-platform tool equivalents and instructions-file conventions, see [claude-code-tools.md](references/claude-code-tools.md), [codex-tools.md](references/codex-tools.md), [copilot-tools.md](references/copilot-tools.md), [gemini-tools.md](references/gemini-tools.md), [pi-tools.md](references/pi-tools.md), and [antigravity-tools.md](references/antigravity-tools.md). Gemini CLI users get the tool mapping loaded automatically via GEMINI.md.
+
+# Using Skills
+
+## The Rule
+
+**Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
+
+```dot
+digraph skill_flow {
+ "User message received" [shape=doublecircle];
+ "About to enter plan mode?" [shape=doublecircle];
+ "Already brainstormed?" [shape=diamond];
+ "Invoke brainstorming skill" [shape=box];
+ "Might any skill apply?" [shape=diamond];
+ "Invoke the skill" [shape=box];
+ "Announce: 'Using [skill] to [purpose]'" [shape=box];
+ "Has checklist?" [shape=diamond];
+ "Create a todo per item" [shape=box];
+ "Follow skill exactly" [shape=box];
+ "Respond (including clarifications)" [shape=doublecircle];
+
+ "About to enter plan mode?" -> "Already brainstormed?";
+ "Already brainstormed?" -> "Invoke brainstorming skill" [label="no"];
+ "Already brainstormed?" -> "Might any skill apply?" [label="yes"];
+ "Invoke brainstorming skill" -> "Might any skill apply?";
+
+ "User message received" -> "Might any skill apply?";
+ "Might any skill apply?" -> "Invoke the skill" [label="yes, even 1%"];
+ "Might any skill apply?" -> "Respond (including clarifications)" [label="definitely not"];
+ "Invoke the skill" -> "Announce: 'Using [skill] to [purpose]'";
+ "Announce: 'Using [skill] to [purpose]'" -> "Has checklist?";
+ "Has checklist?" -> "Create a todo per item" [label="yes"];
+ "Has checklist?" -> "Follow skill exactly" [label="no"];
+ "Create a todo per item" -> "Follow skill exactly";
+}
+```
+
+## Red Flags
+
+These thoughts mean STOP—you're rationalizing:
+
+| Thought | Reality |
+|---------|---------|
+| "This is just a simple question" | Questions are tasks. Check for skills. |
+| "I need more context first" | Skill check comes BEFORE clarifying questions. |
+| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
+| "I can check git/files quickly" | Files lack conversation context. Check for skills. |
+| "Let me gather information first" | Skills tell you HOW to gather information. |
+| "This doesn't need a formal skill" | If a skill exists, use it. |
+| "I remember this skill" | Skills evolve. Read current version. |
+| "This doesn't count as a task" | Action = task. Check for skills. |
+| "The skill is overkill" | Simple things become complex. Use it. |
+| "I'll just do this one thing first" | Check BEFORE doing anything. |
+| "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
+| "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
+
+## Skill Priority
+
+When multiple skills could apply, use this order:
+
+1. **Process skills first** (brainstorming, systematic-debugging) - these determine HOW to approach the task
+2. **Implementation skills second** (frontend-design, mcp-builder) - these guide execution
+
+"Let's build X" → brainstorming first, then implementation skills.
+"Fix this bug" → systematic-debugging first, then domain-specific skills.
+
+## Skill Types
+
+**Rigid** (TDD, systematic-debugging): Follow exactly. Don't adapt away discipline.
+
+**Flexible** (patterns): Adapt principles to context.
+
+The skill itself tells you which.
+
+## User Instructions
+
+Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+</EXTREMELY_IMPORTANT>
+</hooks_context>
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 4:33 PM (UTC-7)</timestamp>
+
+不是，我不明白为啥 open code 它，它有 multiple writer 啊？它难道不也是 `depends on only one dB for one specific session` 吗？
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 4:37 PM (UTC-7)</timestamp>
+
+How large can the SQLite on a doable object store?
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 4:58 PM (UTC-7)</timestamp>
+
+build opencode to a usable state
+
+---
+
+<timestamp>Thursday, Jun 25, 2026, 5:19 PM (UTC-7)</timestamp>
+
+@opencode/packages I want to learn what each package is and how some of them are transferable for lessons from. Also, take a look at spec @opencode/specs
+
+---
+
+<manually_attached_skills>
+The user has manually attached the following skills to their message.
+These skills contain specific instructions or workflows that the user wants you to follow for this request.
+Only read the files if needed, the full skill content is inlined here.
+
+Skill Name: create-skill
+Path: /Users/toubatbrian/.cursor/skills-cursor/create-skill/SKILL.md
+SKILL.md content:
+# Creating Skills in Cursor
+
+This skill guides you through creating effective Agent Skills for Cursor. Skills are markdown files that teach the agent how to perform specific tasks: reviewing PRs using team standards, generating commit messages in a preferred format, querying database schemas, or any specialized workflow.
+
+## Before You Begin: Gather Requirements
+
+Before creating a skill, gather essential information from the user about:
+
+1. **Purpose and scope**: What specific task or workflow should this skill help with?
+2. **Target location**: Should this be a personal skill (~/.cursor/skills/) or project skill (.cursor/skills/)?
+3. **Trigger scenarios**: When should the agent automatically apply this skill?
+4. **Key domain knowledge**: What specialized information does the agent need that it wouldn't already know?
+5. **Output format preferences**: Are there specific templates, formats, or styles required?
+6. **Existing patterns**: Are there existing examples or conventions to follow?
+
+### Verbatim text from the user
+
+If the user includes exact wording to use in the skill, respect it and use it **verbatim** in `SKILL.md` (same words, same order). Do not paraphrase, soften, or expand their copy, and do not add unrequested headings or commentary around it.
+
+### Inferring from Context
+
+If you have previous conversation context, infer the skill from what was discussed. You can create skills based on workflows, patterns, or domain knowledge that emerged in the conversation.
+
+### Gathering Additional Information
+
+If you need clarification, use the AskQuestion tool when available:
+
+```
+Example AskQuestion usage:
+- "Where should this skill be stored?" with options like ["Personal (~/.cursor/skills/)", "Project (.cursor/skills/)"]
+- "Should this skill include executable scripts?" with options like ["Yes", "No"]
+```
+
+If the AskQuestion tool is not available, ask these questions conversationally.
+
+---
+
+## Skill File Structure
+
+### Directory Layout
+
+Skills are stored as directories containing a `SKILL.md` file:
+
+```
+skill-name/
+├── SKILL.md              # Required - main instructions
+├── reference.md          # Optional - detailed documentation
+├── examples.md           # Optional - usage examples
+└── scripts/              # Optional - utility scripts
+    ├── validate.py
+    └── helper.sh
+```
+
+### Storage Locations
+
+| Type | Path | Scope |
+|------|------|-------|
+| Personal | ~/.cursor/skills/skill-name/ | Available across all your projects |
+| Project | .cursor/skills/skill-name/ | Shared with anyone using the repository |
+
+**IMPORTANT**: Never create skills in `~/.cursor/skills-cursor/`. This directory is reserved for Cursor's internal built-in skills and is managed automatically by the system.
+
+### SKILL.md Structure
+
+Every skill requires a `SKILL.md` file with YAML frontmatter and markdown body:
+
+```markdown
+---
+name: your-skill-name
+description: Brief description of what this skill does and when to use it
+disable-model-invocation: true
+---
+
+# Your Skill Name
+
+## Instructions
+Clear, step-by-step guidance for the agent.
+
+## Examples
+Concrete examples of using this skill.
+```
+
+Default `disable-model-invocation: true` so the skill only loads when named explicitly. Omit it only when the agent should auto-invoke from ambient context.
+
+### Required Metadata Fields
+
+| Field | Requirements | Purpose |
+|-------|--------------|---------|
+| `name` | Max 64 chars, lowercase letters/numbers/hyphens only | Unique identifier for the skill |
+| `description` | Max 1024 chars, non-empty | Helps agent decide when to apply the skill |
+
+---
+
+## Writing Effective Descriptions
+
+The description is **critical** for skill discovery. The agent uses it to decide when to apply your skill.
+
+### Description Best Practices
+
+1. **Write in third person** (the description is injected into the system prompt):
+   - ✅ Good: "Processes Excel files and generates reports"
+   - ❌ Avoid: "I can help you process Excel files"
+   - ❌ Avoid: "You can use this to process Excel files"
+
+2. **Be specific and include trigger terms**:
+   - ✅ Good: "Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction."
+   - ❌ Vague: "Helps with documents"
+
+3. **Include both WHAT and WHEN**:
+   - WHAT: What the skill does (specific capabilities)
+   - WHEN: When the agent should use it (trigger scenarios)
+
+### Description Examples
+
+```yaml
+# PDF Processing
+description: Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
+
+# Excel Analysis
+description: Analyze Excel spreadsheets, create pivot tables, generate charts. Use when analyzing Excel files, spreadsheets, tabular data, or .xlsx files.
+
+# Git Commit Helper
+description: Generate descriptive commit messages by analyzing git diffs. Use when the user asks for help writing commit messages or reviewing staged changes.
+
+# Code Review
+description: Review code for quality, security, and best practices following team standards. Use when reviewing pull requests, code changes, or when the user asks for a code review.
+```
+
+---
+
+## Core Authoring Principles
+
+### 1. Concise is Key
+
+The context window is shared with conversation history, other skills, and requests. Every token competes for space.
+
+**Default assumption**: The agent is already very smart. Only add context it doesn't already have.
+
+Challenge each piece of information:
+- "Does the agent really need this explanation?"
+- "Can I assume the agent knows this?"
+- "Does this paragraph justify its token cost?"
+
+**Good (concise)**:
+```markdown
+## Extract PDF text
+
+Use pdfplumber for text extraction:
+
+\`\`\`python
+import pdfplumber
+
+with pdfplumber.open("file.pdf") as pdf:
+    text = pdf.pages[0].extract_text()
+\`\`\`
+```
+
+**Bad (verbose)**:
+```markdown
+## Extract PDF text
+
+PDF (Portable Document Format) files are a common file format that contains
+text, images, and other content. To extract text from a PDF, you'll need to
+use a library. There are many libraries available for PDF processing, but we
+recommend pdfplumber because it's easy to use and handles most cases well...
+```
+
+### 2. Keep SKILL.md Under 500 Lines
+
+For optimal performance, the main SKILL.md file should be concise. Use progressive disclosure for detailed content.
+
+### 3. Progressive Disclosure
+
+Put essential information in SKILL.md; detailed reference material in separate files that the agent reads only when needed.
+
+```markdown
+# PDF Processing
+
+## Quick start
+[Essential instructions here]
+
+## Additional resources
+- For complete API details, see [reference.md](reference.md)
+- For usage examples, see [examples.md](examples.md)
+```
+
+**Keep references one level deep** - link directly from SKILL.md to reference files. Deeply nested references may result in partial reads.
+
+### 4. Set Appropriate Degrees of Freedom
+
+Match specificity to the task's fragility:
+
+| Freedom Level | When to Use | Example |
+|---------------|-------------|---------|
+| **High** (text instructions) | Multiple valid approaches, context-dependent | Code review guidelines |
+| **Medium** (pseudocode/templates) | Preferred pattern with acceptable variation | Report generation |
+| **Low** (specific scripts) | Fragile operations, consistency critical | Database migrations |
+
+---
+
+## Common Patterns
+
+### Template Pattern
+
+Provide output format templates:
+
+```markdown
+## Report structure
+
+Use this template:
+
+\`\`\`markdown
+# [Analysis Title]
+
+## Executive summary
+[One-paragraph overview of key findings]
+
+## Key findings
+- Finding 1 with supporting data
+- Finding 2 with supporting data
+
+## Recommendations
+1. Specific actionable recommendation
+2. Specific actionable recommendation
+\`\`\`
+```
+
+### Examples Pattern
+
+For skills where output quality depends on seeing examples:
+
+```markdown
+## Commit message format
+
+**Example 1:**
+Input: Added user authentication with JWT tokens
+Output:
+\`\`\`
+feat(auth): implement JWT-based authentication
+
+Add login endpoint and token validation middleware
+\`\`\`
+
+**Example 2:**
+Input: Fixed bug where dates displayed incorrectly
+Output:
+\`\`\`
+fix(reports): correct date formatting in timezone conversion
+
+Use UTC timestamps consistently across report generation
+\`\`\`
+```
+
+### Workflow Pattern
+
+Break complex operations into clear steps with checklists:
+
+```markdown
+## Form filling workflow
+
+Copy this checklist and track progress:
+
+\`\`\`
+Task Progress:
+- [ ] Step 1: Analyze the form
+- [ ] Step 2: Create field mapping
+- [ ] Step 3: Validate mapping
+- [ ] Step 4: Fill the form
+- [ ] Step 5: Verify output
+\`\`\`
+
+**Step 1: Analyze the form**
+Run: \`python scripts/analyze_form.py input.pdf\`
+...
+```
+
+### Conditional Workflow Pattern
+
+Guide through decision points:
+
+```markdown
+## Document modification workflow
+
+1. Determine the modification type:
+
+   **Creating new content?** → Follow "Creation workflow" below
+   **Editing existing content?** → Follow "Editing workflow" below
+
+2. Creation workflow:
+   - Use docx-js library
+   - Build document from scratch
+   ...
+```
+
+### Feedback Loop Pattern
+
+For quality-critical tasks, implement validation loops:
+
+```markdown
+## Document editing process
+
+1. Make your edits
+2. **Validate immediately**: \`python scripts/validate.py output/\`
+3. If validation fails:
+   - Review the error message
+   - Fix the issues
+   - Run validation again
+4. **Only proceed when validation passes**
+```
+
+---
+
+## Utility Scripts
+
+Pre-made scripts offer advantages over generated code:
+- More reliable than generated code
+- Save tokens (no code in context)
+- Save time (no code generation)
+- Ensure consistency across uses
+
+```markdown
+## Utility scripts
+
+**analyze_form.py**: Extract all form fields from PDF
+\`\`\`bash
+python scripts/analyze_form.py input.pdf > fields.json
+\`\`\`
+
+**validate.py**: Check for errors
+\`\`\`bash
+python scripts/validate.py fields.json
+# Returns: "OK" or lists conflicts
+\`\`\`
+```
+
+Make clear whether the agent should **execute** the script (most common) or **read** it as reference.
+
+---
+
+## Anti-Patterns to Avoid
+
+### 1. Windows-Style Paths
+- ✅ Use: `scripts/helper.py`
+- ❌ Avoid: `scripts\helper.py`
+
+### 2. Too Many Options
+```markdown
+# Bad - confusing
+"You can use pypdf, or pdfplumber, or PyMuPDF, or..."
+
+# Good - provide a default with escape hatch
+"Use pdfplumber for text extraction.
+For scanned PDFs requiring OCR, use pdf2image with pytesseract instead."
+```
+
+### 3. Time-Sensitive Information
+```markdown
+# Bad - will become outdated
+"If you're doing this before August 2025, use the old API."
+
+# Good - use an "old patterns" section
+## Current method
+Use the v2 API endpoint.
+
+## Old patterns (deprecated)
+<details>
+<summary>Legacy v1 API</summary>
+...
+</details>
+```
+
+### 4. Inconsistent Terminology
+Choose one term and use it throughout:
+- ✅ Always "API endpoint" (not mixing "URL", "route", "path")
+- ✅ Always "field" (not mixing "box", "element", "control")
+
+### 5. Vague Skill Names
+- ✅ Good: `processing-pdfs`, `analyzing-spreadsheets`
+- ❌ Avoid: `helper`, `utils`, `tools`
+
+---
+
+## Skill Creation Workflow
+
+When helping a user create a skill, follow this process:
+
+### Phase 1: Discovery
+
+Gather information about:
+1. The skill's purpose and primary use case
+2. Storage location (personal vs project)
+3. Trigger scenarios
+4. Any specific requirements or constraints
+5. Existing examples or patterns to follow
+
+If you have access to the AskQuestion tool, use it for efficient structured gathering. Otherwise, ask conversationally.
+
+### Phase 2: Design
+
+1. Draft the skill name (lowercase, hyphens, max 64 chars)
+2. Write a specific, third-person description
+3. Outline the main sections needed
+4. Identify if supporting files or scripts are needed
+
+### Phase 3: Implementation
+
+1. Create the directory structure
+2. Write the SKILL.md file with frontmatter
+3. Create any supporting reference files
+4. Create any utility scripts if needed
+
+### Phase 4: Verification
+
+1. Verify the SKILL.md is under 500 lines
+2. Check that the description is specific and includes trigger terms
+3. Ensure consistent terminology throughout
+4. Verify all file references are one level deep
+5. Test that the skill can be discovered and applied
+
+---
+
+## Complete Example
+
+Here's a complete example of a well-structured skill:
+
+**Directory structure:**
+```
+code-review/
+├── SKILL.md
+├── STANDARDS.md
+└── examples.md
+```
+
+**SKILL.md:**
+```markdown
+---
+name: code-review
+description: Review code for quality, security, and maintainability following team standards. Use when reviewing pull requests, examining code changes, or when the user asks for a code review.
+---
+
+# Code Review
+
+## Quick Start
+
+When reviewing code:
+
+1. Check for correctness and potential bugs
+2. Verify security best practices
+3. Assess code readability and maintainability
+4. Ensure tests are adequate
+
+## Review Checklist
+
+- [ ] Logic is correct and handles edge cases
+- [ ] No security vulnerabilities (SQL injection, XSS, etc.)
+- [ ] Code follows project style conventions
+- [ ] Functions are appropriately sized and focused
+- [ ] Error handling is comprehensive
+- [ ] Tests cover the changes
+
+## Providing Feedback
+
+Format feedback as:
+- 🔴 **Critical**: Must fix before merge
+- 🟡 **Suggestion**: Consider improving
+- 🟢 **Nice to have**: Optional enhancement
+
+## Additional Resources
+
+- For detailed coding standards, see [STANDARDS.md](STANDARDS.md)
+- For example reviews, see [examples.md](examples.md)
+```
+
+---
+
+## Summary Checklist
+
+Before finalizing a skill, verify:
+
+### Core Quality
+- [ ] Description is specific and includes key terms
+- [ ] Description includes both WHAT and WHEN
+- [ ] Written in third person
+- [ ] SKILL.md body is under 500 lines
+- [ ] Consistent terminology throughout
+- [ ] Examples are concrete, not abstract
+
+### Structure
+- [ ] File references are one level deep
+- [ ] Progressive disclosure used appropriately
+- [ ] Workflows have clear steps
+- [ ] No time-sensitive information
+
+### If Including Scripts
+- [ ] Scripts solve problems rather than punt
+- [ ] Required packages are documented
+- [ ] Error handling is explicit and helpful
+- [ ] No Windows-style paths
+</manually_attached_skills>
+<timestamp>Thursday, Jun 25, 2026, 5:58 PM (UTC-7)</timestamp>
+
+/create-skill @arche/.memory document your current memory and insights here. prefix by yyyy-mm-dd-<topic>.md
+
+---
+
+/create-skill 
+
+1. /sync-mem <instruction> | none
+2. /read-mem <topic> | none
+
+---
+
+Analyze sandcastle repository @/Users/toubatbrian/Documents/GitHub/sandcastle/ . Learn what are the common API contracts for a sandbox. And what this project does. Because our project architecture is going to be supporting multiple client sites, whether it is TUI or on-web the three separate things:
+1. A client, which is for display purposes.
+2. For Agent/Worker, which is actually running the agent loop and handling connection and state across potentially multiple clients.
+3. The workspace is an abstraction of a file system plus a process handling the connection and communication to the agent to worker.
+
+---
+
+/sync-mem
+
+---
+
+does cloud hosted Dos handle machine crash?

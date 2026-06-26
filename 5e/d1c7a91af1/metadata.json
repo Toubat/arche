@@ -1,0 +1,40 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "5ed1c7a91af1",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 5,
+  "files_touched": [
+    ".memory/2026-06-25-arche-state-and-roadmap.md",
+    ".memory/2026-06-25-durable-objects-platform.md",
+    ".memory/2026-06-25-opencode-architecture.md",
+    ".memory/2026-06-25-opencode-local-build.md",
+    ".memory/2026-06-25-sandcastle-architecture.md",
+    "apps/durable-objects/.gitignore",
+    "apps/durable-objects/package.json",
+    "apps/durable-objects/scripts/build-plugins.ts",
+    "apps/durable-objects/src/cloudflare.d.ts",
+    "apps/durable-objects/src/counter.ts",
+    "apps/durable-objects/src/env.ts",
+    "apps/durable-objects/src/index.ts",
+    "apps/durable-objects/src/plugin-host.ts",
+    "apps/durable-objects/src/plugin-sdk.ts",
+    "apps/durable-objects/src/plugins/echo-plugin.bundle.ts",
+    "apps/durable-objects/src/plugins/echo-plugin.ts",
+    "apps/durable-objects/src/supervisor.ts",
+    "apps/durable-objects/tsconfig.json",
+    "apps/durable-objects/wrangler.toml",
+    "apps/web/tsconfig.json",
+    "bun.lock",
+    "packages/utils/package.json",
+    "tsconfig.base.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/5e/d1c7a91af1/0/metadata.json",
+      "transcript": "/5e/d1c7a91af1/0/full.jsonl",
+      "content_hash": "/5e/d1c7a91af1/0/content_hash.txt",
+      "prompt": "/5e/d1c7a91af1/0/prompt.txt"
+    }
+  ]
+}

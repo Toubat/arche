@@ -1,0 +1,152 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "5ed1c7a91af1",
+  "session_id": "6ba200ff-f026-498c-b12d-b94ef255458f",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-26T04:38:45.315597Z",
+  "branch": "main",
+  "checkpoints_count": 5,
+  "save_step_count": 5,
+  "files_touched": [
+    ".memory/2026-06-25-arche-state-and-roadmap.md",
+    ".memory/2026-06-25-durable-objects-platform.md",
+    ".memory/2026-06-25-opencode-architecture.md",
+    ".memory/2026-06-25-opencode-local-build.md",
+    ".memory/2026-06-25-sandcastle-architecture.md",
+    "apps/durable-objects/.gitignore",
+    "apps/durable-objects/package.json",
+    "apps/durable-objects/scripts/build-plugins.ts",
+    "apps/durable-objects/src/cloudflare.d.ts",
+    "apps/durable-objects/src/counter.ts",
+    "apps/durable-objects/src/env.ts",
+    "apps/durable-objects/src/index.ts",
+    "apps/durable-objects/src/plugin-host.ts",
+    "apps/durable-objects/src/plugin-sdk.ts",
+    "apps/durable-objects/src/plugins/echo-plugin.bundle.ts",
+    "apps/durable-objects/src/plugins/echo-plugin.ts",
+    "apps/durable-objects/src/supervisor.ts",
+    "apps/durable-objects/tsconfig.json",
+    "apps/durable-objects/wrangler.toml",
+    "apps/web/tsconfig.json",
+    "bun.lock",
+    "packages/utils/package.json",
+    "tsconfig.base.json"
+  ],
+  "agent": "Cursor",
+  "model": "claude-opus-4-8-thinking-high",
+  "turn_id": "963f1049c5af",
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-cursor-create-skill-2026-06-26T01:08:40.78276Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "create-skill"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "4e8082f49bd2",
+      "timestamp": "2026-06-26T01:08:40.78276Z",
+      "native": {
+        "command": "/create-skill"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/create-skill",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-sync-mem-2026-06-26T01:22:18.977169Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "sync-mem"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "7beba1d833b3",
+      "timestamp": "2026-06-26T01:22:18.977169Z",
+      "native": {
+        "command": "/sync-mem"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/sync-mem",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 5,
+    "context_tokens": 291346,
+    "context_window_size": 300000
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-26T04:38:45.269982Z",
+    "agent_lines": 1120,
+    "agent_removed": 5,
+    "human_added": 307,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1427,
+    "total_lines_changed": 1432,
+    "agent_percentage": 78.56145251396647,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1042,
+      "agent_lines_removed": 5
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 97,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1042,
+      "agent_lines_removed": 5,
+      "user_added_per_file": {
+        ".cursor/skills/read-mem/SKILL.md": 39,
+        ".cursor/skills/sync-mem/SKILL.md": 58
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 97,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1042,
+      "agent_lines_removed": 5,
+      "user_added_per_file": {
+        ".cursor/skills/read-mem/SKILL.md": 39,
+        ".cursor/skills/sync-mem/SKILL.md": 58
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 105,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1176,
+      "agent_lines_removed": 5,
+      "user_added_per_file": {
+        ".cursor/skills/read-mem/SKILL.md": 39,
+        ".cursor/skills/sync-mem/SKILL.md": 58,
+        ".memory/2026-06-25-arche-state-and-roadmap.md": 8
+      }
+    }
+  ]
+}
