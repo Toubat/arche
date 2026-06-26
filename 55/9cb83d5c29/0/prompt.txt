@@ -1,0 +1,75 @@
+/using-entire
+
+---
+
+in go what is ctx.background
+
+---
+
+Does Effect work in Do?
+
+---
+
+I found the effect framework is 传染性很强。If I use it at some point, I have to use it in all my codebase, but I really like the effect concurrency primitive. Because a lot of the agent loop involves multiple double-quote threads running concurrently and I need a way to manage their life cycle.
+
+---
+
+What is the difference between normal usage of the TypeScript versus using the effect in terms of dependency management?
+
+---
+
+Checkout @/Users/toubatbrian/Documents/GitHub/pi/ , which did not uses Effect. How it formulates it's internal agent loop that are mid-stoppable?
+
+---
+
+I still want to create my custom concurrency library under the packages. To provide the concurrency primitives that has a better way to handle the explicit abort signal management. I will write some markdown draft for you, and then we can together design this.
+
+---
+
+how python fuiture resolved?
+
+---
+
+@arche/concurrency-library-design-draft.md what do you think?
+
+---
+
+I wonder can io.all / io.race return normal Promise? ofc, internally you need to manually start corotine
+
+---
+
+let's to Corotine.spawn to replace start. I think this makes more sense. and background is the utility for spawning a list of coros /grill-me
+
+---
+
+/tdd
+
+---
+
+So I think you misunderstand. We don't want the fucking @repo/  those are, I think, from the previous testing purpose.
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+I found this library calle Effection: https://frontside.com/effection/blog/2026-04-07-strict-structured-concurrency/
+
+---
+
+could you clarify with a code example to illustrate?
+
+---
+
+This behavior is what I originally proposed for what I mentioned before is that a child life cycle should not outlive a parent life cycle. And you should do this as well. And then remember /test-driven-development /using-superpowers
+
+---
+
+Can you seek out any edge cases? For a comprehensive testing of the framework, ensuring code coverage to reach 95% and up better 100%. There are definitely a lot of maybe very intricate concurrency use cases where there might be some bug that was triggered. You should be able to add a unit test to back those.
+
+---
+
+You might want to also search online for some of the intricate scenarios and first list them out before implementation. This way you can keep track of all of them clearly.

@@ -1,0 +1,235 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "559cb83d5c29",
+  "session_id": "6ba200ff-f026-498c-b12d-b94ef255458f",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-26T20:59:03.20674Z",
+  "branch": "main",
+  "checkpoints_count": 20,
+  "save_step_count": 7,
+  "files_touched": [
+    ".agents/skills/explain/SKILL.md",
+    ".agents/skills/recall/SKILL.md",
+    ".agents/skills/replay/SKILL.md",
+    ".agents/skills/review/SKILL.md",
+    ".agents/skills/review/references/review-rules.md",
+    ".agents/skills/search/SKILL.md",
+    ".agents/skills/session-crosslink/SKILL.md",
+    ".agents/skills/session-handoff/SKILL.md",
+    ".agents/skills/session-to-skill/SKILL.md",
+    ".agents/skills/teach/SKILL.md",
+    ".agents/skills/using-entire/SKILL.md",
+    ".agents/skills/what-happened/SKILL.md",
+    "bun.lock",
+    "concurrency-library-design-draft.md",
+    "packages/concurrency/DESIGN.md",
+    "packages/concurrency/package.json",
+    "packages/concurrency/src/cancel.test.ts",
+    "packages/concurrency/src/coroutine.test.ts",
+    "packages/concurrency/src/coroutine.ts",
+    "packages/concurrency/src/defer-timeout.test.ts",
+    "packages/concurrency/src/defer.test.ts",
+    "packages/concurrency/src/defer.ts",
+    "packages/concurrency/src/errors.ts",
+    "packages/concurrency/src/graceful.test.ts",
+    "packages/concurrency/src/index.ts",
+    "packages/concurrency/src/nested.test.ts",
+    "packages/concurrency/src/scope.ts",
+    "packages/concurrency/src/sleep.test.ts",
+    "packages/concurrency/src/sleep.ts",
+    "packages/concurrency/src/strict.test.ts",
+    "packages/concurrency/src/types.ts",
+    "packages/concurrency/tsconfig.json",
+    "packages/utils/package.json",
+    "tsconfig.base.json"
+  ],
+  "agent": "Cursor",
+  "model": "claude-opus-4-8-thinking-high",
+  "turn_id": "b89c59bd0fc2",
+  "checkpoint_transcript_start": 393,
+  "transcript_lines_at_start": 393,
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-cursor-create-skill-2026-06-26T01:08:40.78276Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "create-skill"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "4e8082f49bd2",
+      "timestamp": "2026-06-26T01:08:40.78276Z",
+      "native": {
+        "command": "/create-skill"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/create-skill",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-sync-mem-2026-06-26T01:22:18.977169Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "sync-mem"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "7beba1d833b3",
+      "timestamp": "2026-06-26T01:22:18.977169Z",
+      "native": {
+        "command": "/sync-mem"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/sync-mem",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-using-entire-2026-06-26T04:43:23.333592Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "using-entire"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "3e5330001cd5",
+      "timestamp": "2026-06-26T04:43:23.333592Z",
+      "native": {
+        "command": "/using-entire"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/using-entire",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-tdd-2026-06-26T08:57:49.022705Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "tdd"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "05ebb56735c7",
+      "timestamp": "2026-06-26T08:57:49.022705Z",
+      "native": {
+        "command": "/tdd"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/tdd",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 25,
+    "context_tokens": 278853,
+    "context_window_size": 300000
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-26T20:59:03.180899Z",
+    "agent_lines": 935,
+    "agent_removed": 0,
+    "human_added": 162,
+    "human_modified": 58,
+    "human_removed": 0,
+    "total_committed": 1126,
+    "total_lines_changed": 1155,
+    "agent_percentage": 80.95238095238095,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 2010,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".agents/skills/explain/SKILL.md": 34,
+        ".agents/skills/recall/SKILL.md": 123,
+        ".agents/skills/replay/SKILL.md": 141,
+        ".agents/skills/review/SKILL.md": 220,
+        ".agents/skills/review/references/review-rules.md": 87,
+        ".agents/skills/search/SKILL.md": 70,
+        ".agents/skills/session-crosslink/SKILL.md": 141,
+        ".agents/skills/session-handoff/SKILL.md": 137,
+        ".agents/skills/session-to-skill/SKILL.md": 210,
+        ".agents/skills/teach/SKILL.md": 130,
+        ".agents/skills/using-entire/SKILL.md": 152,
+        ".agents/skills/what-happened/SKILL.md": 333,
+        "concurrency-library-design-draft.md": 161,
+        "skills-lock.json": 71
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2009,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2009,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2998,
+      "agent_lines_removed": 2
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2998,
+      "agent_lines_removed": 2
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2998,
+      "agent_lines_removed": 2
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 110,
+      "user_lines_removed": 29,
+      "agent_lines_added": 3084,
+      "agent_lines_removed": 2,
+      "user_added_per_file": {
+        "packages/concurrency/DESIGN.md": 78,
+        "packages/concurrency/src/coroutine.ts": 21,
+        "packages/concurrency/src/scope.ts": 11
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/DESIGN.md": 24,
+        "packages/concurrency/src/coroutine.ts": 5
+      }
+    }
+  ]
+}

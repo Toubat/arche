@@ -1,0 +1,51 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "559cb83d5c29",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 20,
+  "files_touched": [
+    ".agents/skills/explain/SKILL.md",
+    ".agents/skills/recall/SKILL.md",
+    ".agents/skills/replay/SKILL.md",
+    ".agents/skills/review/SKILL.md",
+    ".agents/skills/review/references/review-rules.md",
+    ".agents/skills/search/SKILL.md",
+    ".agents/skills/session-crosslink/SKILL.md",
+    ".agents/skills/session-handoff/SKILL.md",
+    ".agents/skills/session-to-skill/SKILL.md",
+    ".agents/skills/teach/SKILL.md",
+    ".agents/skills/using-entire/SKILL.md",
+    ".agents/skills/what-happened/SKILL.md",
+    "bun.lock",
+    "concurrency-library-design-draft.md",
+    "packages/concurrency/DESIGN.md",
+    "packages/concurrency/package.json",
+    "packages/concurrency/src/cancel.test.ts",
+    "packages/concurrency/src/coroutine.test.ts",
+    "packages/concurrency/src/coroutine.ts",
+    "packages/concurrency/src/defer-timeout.test.ts",
+    "packages/concurrency/src/defer.test.ts",
+    "packages/concurrency/src/defer.ts",
+    "packages/concurrency/src/errors.ts",
+    "packages/concurrency/src/graceful.test.ts",
+    "packages/concurrency/src/index.ts",
+    "packages/concurrency/src/nested.test.ts",
+    "packages/concurrency/src/scope.ts",
+    "packages/concurrency/src/sleep.test.ts",
+    "packages/concurrency/src/sleep.ts",
+    "packages/concurrency/src/strict.test.ts",
+    "packages/concurrency/src/types.ts",
+    "packages/concurrency/tsconfig.json",
+    "packages/utils/package.json",
+    "tsconfig.base.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/55/9cb83d5c29/0/metadata.json",
+      "transcript": "/55/9cb83d5c29/0/full.jsonl",
+      "content_hash": "/55/9cb83d5c29/0/content_hash.txt",
+      "prompt": "/55/9cb83d5c29/0/prompt.txt"
+    }
+  ]
+}
