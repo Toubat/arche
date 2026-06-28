@@ -1,0 +1,347 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "bfe0ece3ea62",
+  "session_id": "6ba200ff-f026-498c-b12d-b94ef255458f",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-28T02:04:50.941551Z",
+  "branch": "main",
+  "checkpoints_count": 12,
+  "save_step_count": 13,
+  "files_touched": [
+    ".memory/2026-06-25-arche-state-and-roadmap.md",
+    ".memory/2026-06-26-concurrency-library.md",
+    "packages/concurrency/DESIGN.md",
+    "packages/concurrency/src/context.ts",
+    "packages/concurrency/src/coroutine.ts",
+    "packages/concurrency/src/defer-timeout.test.ts",
+    "packages/concurrency/src/edge-als.test.ts",
+    "packages/concurrency/src/edge-cancellation.test.ts",
+    "packages/concurrency/src/edge-defer.test.ts",
+    "packages/concurrency/src/edge-errors.test.ts",
+    "packages/concurrency/src/edge-graceful.test.ts",
+    "packages/concurrency/src/edge-lifecycle.test.ts",
+    "packages/concurrency/src/edge-sleep.test.ts",
+    "packages/concurrency/src/edge-strict-races.test.ts",
+    "packages/concurrency/src/errors.ts",
+    "packages/concurrency/src/graceful.test.ts",
+    "packages/concurrency/src/index.ts",
+    "packages/concurrency/src/log.test.ts",
+    "packages/concurrency/src/log.ts",
+    "packages/concurrency/src/scope.ts",
+    "packages/concurrency/src/sleep.test.ts",
+    "packages/concurrency/src/sleep.ts",
+    "packages/concurrency/src/strict.test.ts",
+    "packages/concurrency/src/types.ts",
+    "packages/concurrency/src/utils.test.ts",
+    "packages/concurrency/src/utils.ts"
+  ],
+  "agent": "Cursor",
+  "model": "claude-opus-4-8-thinking-high",
+  "turn_id": "b6180f36b040",
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-cursor-create-skill-2026-06-26T01:08:40.78276Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "create-skill"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "4e8082f49bd2",
+      "timestamp": "2026-06-26T01:08:40.78276Z",
+      "native": {
+        "command": "/create-skill"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/create-skill",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-sync-mem-2026-06-26T01:22:18.977169Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "sync-mem"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "7beba1d833b3",
+      "timestamp": "2026-06-26T01:22:18.977169Z",
+      "native": {
+        "command": "/sync-mem"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/sync-mem",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-using-entire-2026-06-26T04:43:23.333592Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "using-entire"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "3e5330001cd5",
+      "timestamp": "2026-06-26T04:43:23.333592Z",
+      "native": {
+        "command": "/using-entire"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/using-entire",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-tdd-2026-06-26T08:57:49.022705Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "tdd"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "05ebb56735c7",
+      "timestamp": "2026-06-26T08:57:49.022705Z",
+      "native": {
+        "command": "/tdd"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/tdd",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-sync-mem-2026-06-27T16:39:10.460289Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "sync-mem"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "92c293b6b100",
+      "timestamp": "2026-06-27T16:39:10.460289Z",
+      "native": {
+        "command": "/sync-mem"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/sync-mem",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 37,
+    "context_tokens": 277973,
+    "context_window_size": 300000
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-28T02:04:50.898209Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 819,
+    "human_modified": 274,
+    "human_removed": 0,
+    "total_committed": 836,
+    "total_lines_changed": 1093,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 486,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 615,
+      "agent_lines_removed": 1
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 32,
+      "user_lines_removed": 8,
+      "agent_lines_added": 672,
+      "agent_lines_removed": 23,
+      "user_added_per_file": {
+        "packages/concurrency/src/edge-cancellation.test.ts": 32
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/edge-cancellation.test.ts": 8
+      }
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 63,
+      "user_lines_removed": 8,
+      "agent_lines_added": 683,
+      "agent_lines_removed": 26,
+      "user_added_per_file": {
+        "packages/concurrency/src/edge-cancellation.test.ts": 63
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/edge-cancellation.test.ts": 8
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 63,
+      "user_lines_removed": 8,
+      "agent_lines_added": 683,
+      "agent_lines_removed": 26,
+      "user_added_per_file": {
+        "packages/concurrency/src/edge-cancellation.test.ts": 63
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/edge-cancellation.test.ts": 8
+      }
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 104,
+      "user_lines_removed": 24,
+      "agent_lines_added": 683,
+      "agent_lines_removed": 26,
+      "user_added_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 41,
+        "packages/concurrency/src/edge-cancellation.test.ts": 63
+      },
+      "user_removed_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 16,
+        "packages/concurrency/src/edge-cancellation.test.ts": 8
+      }
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 104,
+      "user_lines_removed": 24,
+      "agent_lines_added": 739,
+      "agent_lines_removed": 75,
+      "user_added_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 41,
+        "packages/concurrency/src/edge-cancellation.test.ts": 63
+      },
+      "user_removed_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 16,
+        "packages/concurrency/src/edge-cancellation.test.ts": 8
+      }
+    },
+    {
+      "checkpoint_number": 10,
+      "user_lines_added": 111,
+      "user_lines_removed": 26,
+      "agent_lines_added": 739,
+      "agent_lines_removed": 75,
+      "user_added_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 41,
+        "packages/concurrency/src/coroutine.ts": 3,
+        "packages/concurrency/src/edge-cancellation.test.ts": 63,
+        "packages/concurrency/src/utils.ts": 4
+      },
+      "user_removed_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 16,
+        "packages/concurrency/src/coroutine.ts": 2,
+        "packages/concurrency/src/edge-cancellation.test.ts": 8
+      }
+    },
+    {
+      "checkpoint_number": 11,
+      "user_lines_added": 108,
+      "user_lines_removed": 24,
+      "agent_lines_added": 747,
+      "agent_lines_removed": 80,
+      "user_added_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 41,
+        "packages/concurrency/src/edge-cancellation.test.ts": 63,
+        "packages/concurrency/src/utils.ts": 4
+      },
+      "user_removed_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 16,
+        "packages/concurrency/src/edge-cancellation.test.ts": 8
+      }
+    },
+    {
+      "checkpoint_number": 12,
+      "user_lines_added": 108,
+      "user_lines_removed": 24,
+      "agent_lines_added": 747,
+      "agent_lines_removed": 80,
+      "user_added_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 41,
+        "packages/concurrency/src/edge-cancellation.test.ts": 63,
+        "packages/concurrency/src/utils.ts": 4
+      },
+      "user_removed_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 16,
+        "packages/concurrency/src/edge-cancellation.test.ts": 8
+      }
+    },
+    {
+      "checkpoint_number": 13,
+      "user_lines_added": 108,
+      "user_lines_removed": 24,
+      "agent_lines_added": 747,
+      "agent_lines_removed": 80,
+      "user_added_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 41,
+        "packages/concurrency/src/edge-cancellation.test.ts": 63,
+        "packages/concurrency/src/utils.ts": 4
+      },
+      "user_removed_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 16,
+        "packages/concurrency/src/edge-cancellation.test.ts": 8
+      }
+    },
+    {
+      "checkpoint_number": 14,
+      "user_lines_added": 143,
+      "user_lines_removed": 51,
+      "agent_lines_added": 961,
+      "agent_lines_removed": 125,
+      "user_added_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 41,
+        "packages/concurrency/src/edge-cancellation.test.ts": 63,
+        "packages/concurrency/src/edge-graceful.test.ts": 35,
+        "packages/concurrency/src/utils.ts": 4
+      },
+      "user_removed_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 16,
+        "packages/concurrency/src/edge-cancellation.test.ts": 8,
+        "packages/concurrency/src/edge-graceful.test.ts": 27
+      }
+    }
+  ]
+}

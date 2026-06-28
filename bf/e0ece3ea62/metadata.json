@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "bfe0ece3ea62",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 12,
+  "files_touched": [
+    ".memory/2026-06-25-arche-state-and-roadmap.md",
+    ".memory/2026-06-26-concurrency-library.md",
+    "packages/concurrency/DESIGN.md",
+    "packages/concurrency/src/context.ts",
+    "packages/concurrency/src/coroutine.ts",
+    "packages/concurrency/src/defer-timeout.test.ts",
+    "packages/concurrency/src/edge-als.test.ts",
+    "packages/concurrency/src/edge-cancellation.test.ts",
+    "packages/concurrency/src/edge-defer.test.ts",
+    "packages/concurrency/src/edge-errors.test.ts",
+    "packages/concurrency/src/edge-graceful.test.ts",
+    "packages/concurrency/src/edge-lifecycle.test.ts",
+    "packages/concurrency/src/edge-sleep.test.ts",
+    "packages/concurrency/src/edge-strict-races.test.ts",
+    "packages/concurrency/src/errors.ts",
+    "packages/concurrency/src/graceful.test.ts",
+    "packages/concurrency/src/index.ts",
+    "packages/concurrency/src/log.test.ts",
+    "packages/concurrency/src/log.ts",
+    "packages/concurrency/src/scope.ts",
+    "packages/concurrency/src/sleep.test.ts",
+    "packages/concurrency/src/sleep.ts",
+    "packages/concurrency/src/strict.test.ts",
+    "packages/concurrency/src/types.ts",
+    "packages/concurrency/src/utils.test.ts",
+    "packages/concurrency/src/utils.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/bf/e0ece3ea62/0/metadata.json",
+      "transcript": "/bf/e0ece3ea62/0/full.jsonl",
+      "content_hash": "/bf/e0ece3ea62/0/content_hash.txt",
+      "prompt": "/bf/e0ece3ea62/0/prompt.txt"
+    }
+  ]
+}
