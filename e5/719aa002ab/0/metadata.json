@@ -1,0 +1,397 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "e5719aa002ab",
+  "session_id": "6ba200ff-f026-498c-b12d-b94ef255458f",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-28T05:02:49.749401Z",
+  "branch": "main",
+  "checkpoints_count": 11,
+  "save_step_count": 11,
+  "files_touched": [
+    ".memory/2026-06-26-concurrency-library.md",
+    "apps/durable-objects/scripts/build-plugins.ts",
+    "apps/durable-objects/src/env.ts",
+    "apps/durable-objects/src/index.ts",
+    "apps/durable-objects/src/plugin-host.ts",
+    "apps/durable-objects/src/plugins/echo-plugin.bundle.ts",
+    "packages/concurrency/DESIGN.md",
+    "packages/concurrency/coverage/lcov.info",
+    "packages/concurrency/src/channel.test.ts",
+    "packages/concurrency/src/channel.ts",
+    "packages/concurrency/src/combinators.test.ts",
+    "packages/concurrency/src/combinators.ts",
+    "packages/concurrency/src/coroutine.ts",
+    "packages/concurrency/src/errors.ts",
+    "packages/concurrency/src/future.test.ts",
+    "packages/concurrency/src/future.ts",
+    "packages/concurrency/src/global.test.ts",
+    "packages/concurrency/src/global.ts",
+    "packages/concurrency/src/index.ts",
+    "packages/concurrency/src/scope.ts",
+    "packages/concurrency/src/semaphore.test.ts",
+    "packages/concurrency/src/semaphore.ts",
+    "packages/concurrency/src/types.ts",
+    "packages/concurrency/src/waiters.ts",
+    "packages/concurrency/src/waitgroup.test.ts",
+    "packages/concurrency/src/waitgroup.ts"
+  ],
+  "agent": "Cursor",
+  "model": "claude-opus-4-8-thinking-high",
+  "turn_id": "c56f200fef65",
+  "checkpoint_transcript_start": 751,
+  "transcript_lines_at_start": 751,
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-cursor-create-skill-2026-06-26T01:08:40.78276Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "create-skill"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "4e8082f49bd2",
+      "timestamp": "2026-06-26T01:08:40.78276Z",
+      "native": {
+        "command": "/create-skill"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/create-skill",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-sync-mem-2026-06-26T01:22:18.977169Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "sync-mem"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "7beba1d833b3",
+      "timestamp": "2026-06-26T01:22:18.977169Z",
+      "native": {
+        "command": "/sync-mem"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/sync-mem",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-using-entire-2026-06-26T04:43:23.333592Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "using-entire"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "3e5330001cd5",
+      "timestamp": "2026-06-26T04:43:23.333592Z",
+      "native": {
+        "command": "/using-entire"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/using-entire",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-tdd-2026-06-26T08:57:49.022705Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "tdd"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "05ebb56735c7",
+      "timestamp": "2026-06-26T08:57:49.022705Z",
+      "native": {
+        "command": "/tdd"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/tdd",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-sync-mem-2026-06-27T16:39:10.460289Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "sync-mem"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "92c293b6b100",
+      "timestamp": "2026-06-27T16:39:10.460289Z",
+      "native": {
+        "command": "/sync-mem"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/sync-mem",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-code-reviewer-2026-06-28T04:49:22.539915Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "code-reviewer"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "c56f200fef65",
+      "timestamp": "2026-06-28T04:49:22.539915Z",
+      "native": {
+        "command": "/code-reviewer"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/code-reviewer",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 48,
+    "context_tokens": 284176,
+    "context_window_size": 300000
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-28T05:02:49.695125Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 2224,
+    "human_modified": 89,
+    "human_removed": 0,
+    "total_committed": 2224,
+    "total_lines_changed": 2313,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 1240,
+      "user_lines_removed": 2,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "packages/concurrency/coverage/lcov.info": 421,
+        "packages/concurrency/src/channel.ts": 83,
+        "packages/concurrency/src/combinators.test.ts": 268,
+        "packages/concurrency/src/combinators.ts": 102,
+        "packages/concurrency/src/errors.ts": 25,
+        "packages/concurrency/src/future.test.ts": 117,
+        "packages/concurrency/src/future.ts": 48,
+        "packages/concurrency/src/index.ts": 22,
+        "packages/concurrency/src/types.ts": 49,
+        "packages/concurrency/src/utils.ts": 30,
+        "packages/concurrency/src/waiters.ts": 75
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/errors.ts": 1,
+        "packages/concurrency/src/index.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1240,
+      "agent_lines_removed": 2
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 128,
+      "user_lines_removed": 10,
+      "agent_lines_added": 1957,
+      "agent_lines_removed": 70,
+      "user_added_per_file": {
+        "packages/concurrency/src/combinators.test.ts": 86,
+        "packages/concurrency/src/combinators.ts": 20,
+        "packages/concurrency/src/future.ts": 22
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/combinators.test.ts": 2,
+        "packages/concurrency/src/future.ts": 4,
+        "packages/concurrency/src/waiters.ts": 4
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 247,
+      "user_lines_removed": 10,
+      "agent_lines_added": 1963,
+      "agent_lines_removed": 75,
+      "user_added_per_file": {
+        "packages/concurrency/src/channel.test.ts": 71,
+        "packages/concurrency/src/combinators.test.ts": 125,
+        "packages/concurrency/src/combinators.ts": 29,
+        "packages/concurrency/src/future.ts": 22
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/combinators.test.ts": 2,
+        "packages/concurrency/src/future.ts": 4,
+        "packages/concurrency/src/waiters.ts": 4
+      }
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 283,
+      "user_lines_removed": 10,
+      "agent_lines_added": 1963,
+      "agent_lines_removed": 75,
+      "user_added_per_file": {
+        "packages/concurrency/src/channel.test.ts": 107,
+        "packages/concurrency/src/combinators.test.ts": 125,
+        "packages/concurrency/src/combinators.ts": 29,
+        "packages/concurrency/src/future.ts": 22
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/combinators.test.ts": 2,
+        "packages/concurrency/src/future.ts": 4,
+        "packages/concurrency/src/waiters.ts": 4
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 283,
+      "user_lines_removed": 10,
+      "agent_lines_added": 1963,
+      "agent_lines_removed": 75,
+      "user_added_per_file": {
+        "packages/concurrency/src/channel.test.ts": 107,
+        "packages/concurrency/src/combinators.test.ts": 125,
+        "packages/concurrency/src/combinators.ts": 29,
+        "packages/concurrency/src/future.ts": 22
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/combinators.test.ts": 2,
+        "packages/concurrency/src/future.ts": 4,
+        "packages/concurrency/src/waiters.ts": 4
+      }
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 318,
+      "user_lines_removed": 10,
+      "agent_lines_added": 1963,
+      "agent_lines_removed": 75,
+      "user_added_per_file": {
+        "packages/concurrency/src/channel.test.ts": 142,
+        "packages/concurrency/src/combinators.test.ts": 125,
+        "packages/concurrency/src/combinators.ts": 29,
+        "packages/concurrency/src/future.ts": 22
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/combinators.test.ts": 2,
+        "packages/concurrency/src/future.ts": 4,
+        "packages/concurrency/src/waiters.ts": 4
+      }
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 326,
+      "user_lines_removed": 11,
+      "agent_lines_added": 1963,
+      "agent_lines_removed": 75,
+      "user_added_per_file": {
+        "packages/concurrency/src/channel.test.ts": 141,
+        "packages/concurrency/src/channel.ts": 9,
+        "packages/concurrency/src/combinators.test.ts": 125,
+        "packages/concurrency/src/combinators.ts": 29,
+        "packages/concurrency/src/future.ts": 22
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/channel.ts": 1,
+        "packages/concurrency/src/combinators.test.ts": 2,
+        "packages/concurrency/src/future.ts": 4,
+        "packages/concurrency/src/waiters.ts": 4
+      }
+    },
+    {
+      "checkpoint_number": 10,
+      "user_lines_added": 326,
+      "user_lines_removed": 11,
+      "agent_lines_added": 1963,
+      "agent_lines_removed": 75,
+      "user_added_per_file": {
+        "packages/concurrency/src/channel.test.ts": 141,
+        "packages/concurrency/src/channel.ts": 9,
+        "packages/concurrency/src/combinators.test.ts": 125,
+        "packages/concurrency/src/combinators.ts": 29,
+        "packages/concurrency/src/future.ts": 22
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/channel.ts": 1,
+        "packages/concurrency/src/combinators.test.ts": 2,
+        "packages/concurrency/src/future.ts": 4,
+        "packages/concurrency/src/waiters.ts": 4
+      }
+    },
+    {
+      "checkpoint_number": 11,
+      "user_lines_added": 402,
+      "user_lines_removed": 15,
+      "agent_lines_added": 2019,
+      "agent_lines_removed": 77,
+      "user_added_per_file": {
+        "apps/durable-objects/scripts/build-plugins.ts": 5,
+        "apps/durable-objects/src/env.ts": 1,
+        "apps/durable-objects/src/index.ts": 1,
+        "apps/durable-objects/src/plugin-host.ts": 1,
+        "apps/durable-objects/src/plugins/echo-plugin.bundle.ts": 2,
+        "packages/concurrency/src/channel.test.ts": 141,
+        "packages/concurrency/src/channel.ts": 9,
+        "packages/concurrency/src/combinators.test.ts": 125,
+        "packages/concurrency/src/combinators.ts": 29,
+        "packages/concurrency/src/future.ts": 22,
+        "packages/concurrency/src/semaphore.test.ts": 30,
+        "packages/concurrency/src/semaphore.ts": 4,
+        "packages/concurrency/src/waitgroup.test.ts": 27,
+        "packages/concurrency/src/waitgroup.ts": 5
+      },
+      "user_removed_per_file": {
+        "apps/durable-objects/scripts/build-plugins.ts": 1,
+        "apps/durable-objects/src/env.ts": 1,
+        "apps/durable-objects/src/index.ts": 1,
+        "apps/durable-objects/src/plugin-host.ts": 1,
+        "apps/durable-objects/src/plugins/echo-plugin.bundle.ts": 1,
+        "packages/concurrency/src/combinators.test.ts": 2,
+        "packages/concurrency/src/future.ts": 4,
+        "packages/concurrency/src/waiters.ts": 4
+      }
+    }
+  ]
+}

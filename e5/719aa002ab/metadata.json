@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "e5719aa002ab",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 11,
+  "files_touched": [
+    ".memory/2026-06-26-concurrency-library.md",
+    "apps/durable-objects/scripts/build-plugins.ts",
+    "apps/durable-objects/src/env.ts",
+    "apps/durable-objects/src/index.ts",
+    "apps/durable-objects/src/plugin-host.ts",
+    "apps/durable-objects/src/plugins/echo-plugin.bundle.ts",
+    "packages/concurrency/DESIGN.md",
+    "packages/concurrency/coverage/lcov.info",
+    "packages/concurrency/src/channel.test.ts",
+    "packages/concurrency/src/channel.ts",
+    "packages/concurrency/src/combinators.test.ts",
+    "packages/concurrency/src/combinators.ts",
+    "packages/concurrency/src/coroutine.ts",
+    "packages/concurrency/src/errors.ts",
+    "packages/concurrency/src/future.test.ts",
+    "packages/concurrency/src/future.ts",
+    "packages/concurrency/src/global.test.ts",
+    "packages/concurrency/src/global.ts",
+    "packages/concurrency/src/index.ts",
+    "packages/concurrency/src/scope.ts",
+    "packages/concurrency/src/semaphore.test.ts",
+    "packages/concurrency/src/semaphore.ts",
+    "packages/concurrency/src/types.ts",
+    "packages/concurrency/src/waiters.ts",
+    "packages/concurrency/src/waitgroup.test.ts",
+    "packages/concurrency/src/waitgroup.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e5/719aa002ab/0/metadata.json",
+      "transcript": "/e5/719aa002ab/0/full.jsonl",
+      "content_hash": "/e5/719aa002ab/0/content_hash.txt",
+      "prompt": "/e5/719aa002ab/0/prompt.txt"
+    }
+  ]
+}
