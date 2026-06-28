@@ -6,7 +6,11 @@
  * Run with: bun run build:plugins
  */
 const PLUGINS = [
-  { entry: "src/plugins/echo-plugin.ts", out: "src/plugins/echo-plugin.bundle.ts", constName: "ECHO_PLUGIN_BUNDLE" },
+  {
+    entry: "src/plugins/echo-plugin.ts",
+    out: "src/plugins/echo-plugin.bundle.ts",
+    constName: "ECHO_PLUGIN_BUNDLE",
+  },
 ];
 
 for (const plugin of PLUGINS) {

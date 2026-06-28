@@ -1,30 +1,10 @@
 import { CancelledError, CoroutineAlreadyStartedError } from "./errors";
 import { log } from "./log";
-import { currentScope, runInScope, type Scope } from "./scope";
-import type {
-  Coroutine,
-  CoroutineBody,
-  Ctx,
-  DeferCallback,
-  RoutineHandle,
-  SpawnOptions,
-} from "./types";
+import { currentScope, makeCtx, rootScope, runInScope, type Scope } from "./scope";
+import type { Coroutine, CoroutineBody, DeferCallback, RoutineHandle, SpawnOptions } from "./types";
 
 const DEFAULT_CANCEL_TIMEOUT_MS = 5000;
 const DEFAULT_DEFER_TIMEOUT_MS = 5000;
-
-function makeCtx(signal: AbortSignal, name?: string): Ctx {
-  return {
-    signal,
-    get cancelled() {
-      return signal.aborted;
-    },
-    throwIfCancelled() {
-      if (signal.aborted) throw new CancelledError();
-    },
-    name,
-  };
-}
 
 /**
  * Run a coroutine body, then its deferred cleanups, LIFO. Cleanups run shielded
@@ -234,27 +214,24 @@ class CoroutineImpl<T> implements Coroutine<T> {
 
     // Structured cancellation: aborting the parent propagates down to this child,
     // so cancellation reaches the deepest in-flight framework await. Teardown then
-    // unwinds back up the await chain, running cleanups leaf-first.
-    const parent = currentScope();
+    // unwinds back up the await chain, running cleanups leaf-first. Top-level
+    // coroutines are parented to the root scope so io.cancelGlobal() reaches them.
+    const parent = currentScope() ?? rootScope();
     const onParentAbort = () => controller.abort();
-    if (parent) {
-      if (parent.signal.aborted) controller.abort();
-      else parent.signal.addEventListener("abort", onParentAbort, { once: true });
-    }
+    if (parent.signal.aborted) controller.abort();
+    else parent.signal.addEventListener("abort", onParentAbort, { once: true });
 
     let handle: RoutineHandleImpl<T>;
     const onSettled = () => {
-      if (parent) {
-        if (!parent.signal.aborted) parent.signal.removeEventListener("abort", onParentAbort);
-        parent.children.delete(handle);
-      }
+      if (!parent.signal.aborted) parent.signal.removeEventListener("abort", onParentAbort);
+      parent.children.delete(handle);
     };
 
     const ctx = makeCtx(controller.signal);
     const scope: Scope = { signal: controller.signal, ctx, defers: [], children: new Set() };
     const promise = runWithDefers(this.#body, scope, deferTimeout, onSettled);
     handle = new RoutineHandleImpl(promise, controller, cancelTimeout, ctx.name);
-    parent?.children.add(handle);
+    parent.children.add(handle);
     return handle;
   }
 }

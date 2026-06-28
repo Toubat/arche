@@ -1,8 +1,8 @@
 import type { Env } from "./env";
 
 export { MyDurableObject } from "./counter";
-export { AppRunner, SupervisorApi } from "./supervisor";
 export { PluginHost } from "./plugin-host";
+export { AppRunner, SupervisorApi } from "./supervisor";
 
 export default {
   async fetch(request, env): Promise<Response> {

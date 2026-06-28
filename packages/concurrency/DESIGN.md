@@ -65,6 +65,8 @@ Cancellation is **injection at framework await points**: the in-flight framework
 
 **Spawn short-circuit.** If a coroutine is spawned into an **already-aborted** scope (e.g. an already-cancelled parent), its body never runs at all — the handle settles `CancelledError` immediately. No side effects, no first-await needed.
 
+**Blocking-op short-circuit.** The same rule applies to every blocking data-structure op (`chan.send` / `chan.receive`, `semaphore.acquire`, `waitGroup.wait`, ...): called from an **already-aborted** scope it rejects `CancelledError` and makes no progress, **even when it could complete synchronously** — it will not drain a buffered value, take a free permit, or resolve on a zero counter. The value/permit stays for a live consumer instead of being silently consumed by a coroutine that is on its way out. (Shared one-liner: `rejectIfCancelled()` in `scope.ts`. Top-level, non-coroutine callers have no ambient scope and so are never short-circuited.)
+
 **Cancellation wins.** Once a coroutine's own scope is cancelled, it can never report success. If the body swallows the injected `CancelledError` and returns a value, the handle still settles `CancelledError` — you cannot accidentally make a cancelled coroutine "look successful" (the classic asyncio footgun). After cancellation, any further framework await also re-raises `CancelledError` immediately (level-triggered, like Trio), so the only way a body even reaches its `return` is by explicitly catching cancellation — and even then the value is discarded. (A coroutine that throws a _different_ error while cancelled propagates that error as-is, for diagnostics.)
 
 **Idempotent.** Cancellation routinely arrives from several sources at once (parent teardown, `io.withTimeout`, `io.all` fail-fast, a user handle). An internal flag guarantees the teardown sequence runs **exactly once**; later `cancel()` calls are no-ops, and `cancelGracefully()` just awaits the in-flight teardown. (`spawn` is one-shot/throws; `cancel` converges/no-ops — they are deliberately asymmetric.)
@@ -88,7 +90,7 @@ Each scope tracks the coroutines spawned within it. When the body settles, teard
 2. Run this scope's `defer`s, **LIFO**.
 3. Settle the handle.
 
-This means a background task started with a bare `.spawn()` (or `io.background([...])`) is guaranteed to be cancelled — **and have its `defer`s run and awaited** — before its parent settles:
+This means a background task started with a bare `.spawn()` (or `io.spawn([...])`) is guaranteed to be cancelled — **and have its `defer`s run and awaited** — before its parent settles:
 
 ```ts
 await io
@@ -131,7 +133,7 @@ There is **no upward fault propagation** (this is the non-viral choice, not Trio
 
 - A throwing coroutine settles its handle **rejected**.
 - If the handle is **observed** (awaited / `.then` / `.catch`), the awaiter receives the error. `io.all` / `io.race` / `io.allSettled` observe their members internally, so their fail-fast / aggregate behavior is unchanged.
-- If the handle is **never observed** (typical `io.background` / spawn-and-forget), the framework logs `"unhandled coroutine error: ..."` (modeled on Node's unhandled-rejection detection). Starting work in the background means "I don't care about the result," but the error is never silently lost from the logs.
+- If the handle is **never observed** (typical `io.spawn` / spawn-and-forget), the framework logs `"unhandled coroutine error: ..."` (modeled on Node's unhandled-rejection detection). Starting work in the background means "I don't care about the result," but the error is never silently lost from the logs.
 - `CancelledError` is **never** logged-as-unhandled or treated as a fault.
 
 ### Error catalog
@@ -199,7 +201,7 @@ io.context(): Ctx; // current coroutine's context; throws outside a coroutine
 - Inside a `defer` it returns the **shielded cleanup context** (`cancelled === false`).
 - Called outside any coroutine it **throws** `ConcurrencyError("io.context() called outside a coroutine")` rather than handing back a non-cancellable context that would make cancellation silently no-op.
 
-Spawning children is **not** on `ctx` — you call the ambient `io.coroutine(...).spawn()` / `io.background(...)`, and ALS wires the parent.
+Spawning children is **not** on `ctx` — you call the ambient `io.coroutine(...).spawn()` / `io.spawn(...)`, and ALS wires the parent.
 
 ## API reference (single `io.`\* namespace)
 
@@ -207,7 +209,8 @@ Spawning children is **not** on `ctx` — you call the ambient `io.coroutine(...
 // --- lifecycle ---
 io.coroutine<T>(fn: () => Promise<T>): Coroutine<T>;
 coro.spawn(opts?: { cancelTimeout?: number; deferTimeout?: number }): RoutineHandle<T>;
-io.background<T>(coros: Coroutine<T>[]): RoutineHandle<T[]>; // spawn many, don't await for results
+io.spawn<T>(coro: Coroutine<T>): RoutineHandle<T>;          // spawn one, don't await for results
+io.spawn<T>(coros: Coroutine<T>[]): RoutineHandle<T[]>;     // spawn many, don't await for results
 io.sleep(ms: number): Promise<void>;                        // plain thenable, cancelled via ambient scope
 io.context(): Ctx;                                          // current coroutine's ctx; throws if none
 defer(fn: () => void | Promise<void>): void;                // global; LIFO; shielded
@@ -234,9 +237,11 @@ io.channel<T>(opts?: { capacity?: number }): Channel<T>; // capacity 0 = rendezv
 io.waitGroup(): WaitGroup;            // Go-style add/done/wait; negative throws WaitGroupError
 
 // --- shutdown ---
-io.cancelGlobal(): void;
-io.cancelGlobalGracefully(opts?: { timeoutMs?: number }): Promise<void>;
+io.cancelGlobal(): void;                                   // cancel all top-level coroutines (fire-and-forget)
+io.cancelGlobalGracefully(opts?: { timeoutMs?: number }): Promise<void>; // ...and await every teardown
 ```
+
+Top-level coroutines are implicitly parented to a **root scope**, which is what `io.cancelGlobal()` aborts. Both shutdown calls install a **fresh root** afterwards, so the runtime stays usable (and tests stay isolated) — work spawned after a global cancel is unaffected.
 
 ### `io.withRetry` options
 
@@ -264,9 +269,11 @@ const connectWs = (url: string) =>
     defer(() => ws.close()); // runs LIFO on completion or cancel
     ws.on("error", (e) => result.reject(e));
     ws.on("close", () => result.resolve("done")); // no-op if already settled
-    return await result; // plain thenable, cancelled via ambient scope
+    return await result; // thenable; cancellation is intrinsic (bound to the creating coroutine)
   });
 ```
+
+`future` cancellation is **intrinsic and bound to the creating coroutine**: the future captures the current scope's signal at construction and, when that scope is cancelled, rejects _itself_ with `CancelledError` (write-once, so a later `resolve` is a no-op). There is no per-`await` wrapper and the internal promise is never left dangling. A future created outside any coroutine is awaitable but not cancellable.
 
 Producer/consumer with a channel + waitgroup (competing consumers):
 
@@ -291,18 +298,20 @@ io.coroutine(async () => {
       } // ends cleanly on close
     });
 
-  io.background([producer, consumer(), consumer(), consumer()]); // cancelled when this coroutine exits
+  io.spawn([producer, consumer(), consumer(), consumer()]); // cancelled when this coroutine exits
   await wg.wait();
 });
 ```
 
 ## Open TODOs
 
+- **Combinators accept bare bodies**: let `io.all` / `io.race` / `io.allSettled` / `io.spawn` take `Coroutine<T> | (() => Promise<T>)` (a named `CoroutineLike<T>` union), wrapping raw async functions in `io.coroutine` internally to cut boilerplate. `io.spawn` already accepts a single `Coroutine` or a list of them; the bare-body axis is what remains. Keep `Coroutine`-only ownership semantics; do **not** accept `RoutineHandle` (already-parented, can't be torn down by the combinator).
 - **Pub/sub broadcast** primitive (every subscriber sees every value) — `channel` is competing-consumer only.
 - **Structured nursery/group** object (`group.spawn` + `group.join`, auto-tracked, auto-cancel on error).
 - **Go-style context values** (request-scoped key/value propagation down the tree).
 - `**io.any`\** (first to *resolve\*, ignoring rejections) alongside `io.race` (first to settle).
 - **Absolute-time deadline** variant of `io.withTimeout`.
+- **Generic unobserved-error logging** for any bare `.spawn()` (currently only `io.spawn` surfaces non-cancellation failures to the log).
 
 ## Validation checklist
 

@@ -1,7 +1,7 @@
 import { DurableObject } from "cloudflare:workers";
 import type { Env } from "./env";
-import { ECHO_PLUGIN_BUNDLE } from "./plugins/echo-plugin.bundle";
 import type { PluginManifest, TurnContext } from "./plugin-sdk";
+import { ECHO_PLUGIN_BUNDLE } from "./plugins/echo-plugin.bundle";
 
 // Shape of the plugin's default export once loaded as a dynamic Worker.
 interface PluginEntrypoint {

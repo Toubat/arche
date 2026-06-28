@@ -26,6 +26,88 @@ export interface SpawnOptions {
   deferTimeout?: number;
 }
 
+export type Backoff = "exponential" | "linear" | "constant";
+
+export interface RetryOptions {
+  /** Total attempts (not extra retries). Default 3. */
+  maxAttempts?: number;
+  /** Delay growth between attempts. Default "exponential". */
+  backoff?: Backoff;
+  /** Delay of the first backoff step, in ms. Default 100. */
+  baseDelayMs?: number;
+  /** Upper bound applied to every computed delay, in ms. Default 30_000. */
+  maxDelayMs?: number;
+  /** Full jitter: pick a random delay in `[0, computed)`. Default true. */
+  jitter?: boolean;
+  /** Gate a retry on the thrown error. Default: retry every non-cancellation error. */
+  shouldRetry?: (error: unknown, attempt: number) => boolean;
+  /** Observe each retry just before sleeping (e.g. for logging/metrics). */
+  onRetry?: (error: unknown, attempt: number, delayMs: number) => void;
+}
+
+/**
+ * A write-once, externally-settled awaitable. `resolve`/`reject` settle it; the
+ * first call wins and later calls are silent no-ops. Awaiting it inside a
+ * coroutine is cancellable via the ambient scope.
+ */
+export interface Future<T> extends PromiseLike<T> {
+  /** Settle with a value. No-op if already settled. */
+  resolve(value: T): void;
+  /** Settle with an error. No-op if already settled. */
+  reject(error: unknown): void;
+  /** Whether `resolve` or `reject` has been called. */
+  readonly settled: boolean;
+}
+
+/**
+ * A Go-style channel: a competing-consumer pipe between coroutines. Each value
+ * is delivered to exactly one receiver. `capacity 0` is a rendezvous (every send
+ * blocks until a receiver takes it); a positive capacity buffers that many values
+ * before `send` blocks. All blocking ops are cancellable via the ambient scope.
+ */
+export interface Channel<T> extends AsyncIterable<T> {
+  /** Send a value; blocks while the buffer is full. Rejects `ChannelClosedError` if closed. */
+  send(value: T): Promise<void>;
+  /** Receive the next value; blocks while empty. Rejects `ChannelClosedError` once closed and drained. */
+  receive(): Promise<T>;
+  /** Close the channel: future sends reject, blocked senders reject, and drained receivers complete. */
+  close(): void;
+  readonly closed: boolean;
+}
+
+/**
+ * A counting semaphore guarding `n` permits. `acquire` blocks (cancellably, FIFO)
+ * until a permit is free and returns an idempotent release token; `runExclusive`
+ * wraps acquire/release so the permit is always returned, even on throw or cancel.
+ */
+export interface Semaphore {
+  /** Acquire a permit, blocking until one is free. Returns an idempotent release token. */
+  acquire(): Promise<() => void>;
+  /** Acquire a permit, run `fn`, and always release it afterwards. */
+  runExclusive<T>(fn: () => T | Promise<T>): Promise<T>;
+  /** Permits currently available. */
+  readonly available: number;
+}
+
+/** A mutual-exclusion lock: a {@link Semaphore} with a single permit. */
+export type Mutex = Semaphore;
+
+/**
+ * A Go-style wait group: a counter you `add` to and `done` from, with `wait`
+ * resolving once it returns to zero. Driving the counter below zero throws
+ * `WaitGroupError`. `wait` is cancellable via the ambient scope.
+ */
+export interface WaitGroup {
+  /** Increase the counter by `delta` (default 1). Throws `WaitGroupError` if it would go negative. */
+  add(delta?: number): void;
+  /** Decrement the counter by one (`add(-1)`). */
+  done(): void;
+  /** Resolve once the counter is zero; blocks otherwise. */
+  wait(): Promise<void>;
+  /** The current counter value. */
+  readonly count: number;
+}
+
 /** An inert, one-shot, non-thenable coroutine specification. */
 export interface Coroutine<T> {
   /** Start the coroutine exactly once. A second call throws `CoroutineAlreadyStartedError`. */
