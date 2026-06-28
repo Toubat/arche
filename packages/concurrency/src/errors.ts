@@ -1,7 +1,9 @@
-export class ConcurrencyError extends Error {
-  readonly code: string;
+export type ConcurrencyErrorCode = "cancelled" | "already_started" | "no_active_coroutine";
 
-  constructor(message: string, code: string) {
+export class ConcurrencyError extends Error {
+  readonly code: ConcurrencyErrorCode;
+
+  constructor(message: string, code: ConcurrencyErrorCode) {
     super(message);
     this.name = new.target.name;
     this.code = code;

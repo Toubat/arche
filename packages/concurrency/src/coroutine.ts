@@ -1,4 +1,5 @@
 import { CancelledError, CoroutineAlreadyStartedError } from "./errors";
+import { log } from "./log";
 import { currentScope, runInScope, type Scope } from "./scope";
 import type {
   Coroutine,
@@ -34,22 +35,37 @@ type Outcome<T> = { ok: true; value: T } | { ok: false; error: unknown };
 
 async function runWithDefers<T>(
   body: CoroutineBody<T>,
-  ctx: Ctx,
   scope: Scope,
   deferTimeout: number,
   onSettled: () => void,
 ): Promise<T> {
   let outcome: Outcome<T>;
-  try {
-    outcome = { ok: true, value: await runInScope(scope, () => body(ctx)) };
-  } catch (error) {
-    outcome = { ok: false, error };
+  if (scope.signal.aborted) {
+    // Short-circuit: the scope was already cancelled at spawn time (e.g. spawned
+    // into an already-aborted parent), so never run the body at all.
+    outcome = { ok: false, error: new CancelledError() };
+  } else {
+    try {
+      outcome = { ok: true, value: await runInScope(scope, () => body()) };
+    } catch (error) {
+      outcome = { ok: false, error };
+    }
   }
 
-  // Strict structured concurrency: tear down any still-running children before this
-  // scope's own defers, so a child's lifetime never outlives its parent's.
+  // Cancellation wins: a coroutine whose own scope was cancelled must not report
+  // success, even if the body swallowed the injected CancelledError and returned a
+  // value. (A thrown error is preserved as-is for diagnostics.)
+  if (outcome.ok && scope.signal.aborted) {
+    outcome = { ok: false, error: new CancelledError() };
+  }
+
+  // Order matters: children BEFORE defers. Children typically use resources that
+  // this scope's defers release (e.g. a child loops on a `conn` that `defer` closes),
+  // so we must stop the users before releasing what they depend on — reverse-order
+  // (LIFO) teardown. This also enforces strict structured concurrency: a child's
+  // lifetime never outlives its parent's. Do not flip these two.
   await teardownChildren(scope);
-  await runDefers(scope.defers, deferTimeout, ctx.name);
+  await runDefers(scope.defers, deferTimeout, scope.ctx.name);
   onSettled();
 
   if (outcome.ok) return outcome.value;
@@ -65,7 +81,7 @@ async function teardownChildren(scope: Scope): Promise<void> {
 }
 
 async function runDefers(
-  defers: readonly DeferCallback[],
+  defers: DeferCallback[],
   deferTimeout: number,
   name: string | undefined,
 ): Promise<void> {
@@ -75,21 +91,31 @@ async function runDefers(
   // When the budget is exhausted the signal aborts (cancelling any in-flight cleanup)
   // and the remaining defers are skipped.
   const cleanupController = new AbortController();
-  const cleanupScope: Scope = { signal: cleanupController.signal, defers: [], children: new Set() };
   const cleanupCtx = makeCtx(cleanupController.signal);
+  const cleanupScope: Scope = {
+    signal: cleanupController.signal,
+    ctx: cleanupCtx,
+    defers: [],
+    children: new Set(),
+  };
   const timer = setTimeout(() => cleanupController.abort(), deferTimeout);
 
   try {
     await runInScope(cleanupScope, async () => {
-      for (let i = defers.length - 1; i >= 0; i--) {
+      // Drain the defer stack LIFO: newest-registered runs first.
+      while (defers.length > 0) {
         if (cleanupController.signal.aborted) {
-          console.warn(
-            `defer timeout: ${name ?? "coroutine"} cleanup exceeded ${deferTimeout}ms; skipping ${i + 1} remaining defer(s)`,
-          );
+          log.warn("defer cleanup exceeded its timeout; skipping remaining defers", {
+            code: "defer_timeout",
+            coroutine: name ?? "coroutine",
+            deferTimeoutMs: deferTimeout,
+            remaining: defers.length,
+          });
           return;
         }
+        const fn = defers.pop();
         try {
-          await defers[i]?.(cleanupCtx);
+          await fn?.();
         } catch {
           // Cleanup is best-effort; a failing defer must not abort the remaining chain.
         }
@@ -167,12 +193,18 @@ class RoutineHandleImpl<T> implements RoutineHandle<T> {
     // the external result as cancelled anyway and abandon the body. Callers never block forever.
     const timer = setTimeout(() => {
       this.#settle(() => {
-        console.warn(
-          `coroutine hung: ${this.#name ?? "coroutine"} did not halt within ${timeoutMs}ms after cancellation; abandoning`,
+        log.warn(
+          "coroutine did not halt within its cancel timeout after cancellation; abandoning",
+          {
+            code: "coroutine_hung",
+            coroutine: this.#name ?? "coroutine",
+            cancelTimeoutMs: timeoutMs,
+          },
         );
         this.#rejectExternal(new CancelledError());
       });
     }, timeoutMs);
+
     this.#bodyPromise.then(
       () => clearTimeout(timer),
       () => clearTimeout(timer),
@@ -194,10 +226,11 @@ class CoroutineImpl<T> implements Coroutine<T> {
 
   spawn(opts?: SpawnOptions): RoutineHandle<T> {
     if (this.#started) throw new CoroutineAlreadyStartedError();
+
     this.#started = true;
     const controller = new AbortController();
-    const cancelTimeout = opts?.cancelTimeout ?? DEFAULT_CANCEL_TIMEOUT_MS;
-    const deferTimeout = opts?.deferTimeout ?? DEFAULT_DEFER_TIMEOUT_MS;
+    const { cancelTimeout = DEFAULT_CANCEL_TIMEOUT_MS, deferTimeout = DEFAULT_DEFER_TIMEOUT_MS } =
+      opts ?? {};
 
     // Structured cancellation: aborting the parent propagates down to this child,
     // so cancellation reaches the deepest in-flight framework await. Teardown then
@@ -218,8 +251,8 @@ class CoroutineImpl<T> implements Coroutine<T> {
     };
 
     const ctx = makeCtx(controller.signal);
-    const scope: Scope = { signal: controller.signal, defers: [], children: new Set() };
-    const promise = runWithDefers(this.#body, ctx, scope, deferTimeout, onSettled);
+    const scope: Scope = { signal: controller.signal, ctx, defers: [], children: new Set() };
+    const promise = runWithDefers(this.#body, scope, deferTimeout, onSettled);
     handle = new RoutineHandleImpl(promise, controller, cancelTimeout, ctx.name);
     parent?.children.add(handle);
     return handle;

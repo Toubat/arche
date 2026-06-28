@@ -1,7 +1,8 @@
 /**
- * The read-only context handed to a coroutine body (and to a `defer` callback).
- * Spawning children is not on `ctx` - use the ambient `io.*` helpers; the scope
- * is wired through `AsyncLocalStorage`.
+ * The read-only context of the running coroutine. Fetched on demand via
+ * `io.context()` rather than threaded as a parameter, so cancellation access is
+ * opt-in. Spawning children is not on `ctx` - use the ambient `io.*` helpers; the
+ * scope is wired through `AsyncLocalStorage`.
  */
 export interface Ctx {
   /** Aborts when this unit of work is cancelled. Thread into raw async (`fetch(url, { signal })`). */
@@ -14,9 +15,9 @@ export interface Ctx {
   readonly name?: string;
 }
 
-export type CoroutineBody<T> = (ctx: Ctx) => Promise<T>;
+export type CoroutineBody<T> = () => Promise<T>;
 
-export type DeferCallback = (ctx: Ctx) => void | Promise<void>;
+export type DeferCallback = () => unknown | Promise<unknown>;
 
 export interface SpawnOptions {
   /** Budget for the body to halt after cancellation before it is reaped as a zombie. Default 5000ms. */

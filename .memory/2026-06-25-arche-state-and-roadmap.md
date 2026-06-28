@@ -7,9 +7,12 @@
 ## Repo shape
 
 - Monorepo: bun + turbo. `apps/`, `packages/`, `tsconfig.base.json`,
-  `biome.json`.
+  `biome.json`. Source-linking export condition is `@arche/source`.
 - Main app: `apps/durable-objects/` (Cloudflare Workers + DOs, config in
   `wrangler.toml`, TOML not jsonc).
+- `packages/concurrency` (`@arche/concurrency`): non-viral structured-concurrency
+  lib for agent loops; core done + hardened (see
+  `2026-06-26-concurrency-library.md`).
 
 ## apps/durable-objects current files
 

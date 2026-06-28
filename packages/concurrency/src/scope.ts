@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from "node:async_hooks";
-import type { DeferCallback } from "./types";
+import type { Ctx, DeferCallback } from "./types";
 
 /** The minimal child surface a scope needs to enforce strict structured concurrency. */
 export interface ChildHandle {
@@ -13,6 +13,8 @@ export interface ChildHandle {
  */
 export interface Scope {
   readonly signal: AbortSignal;
+  /** The context returned by `io.context()` for code running within this scope. */
+  readonly ctx: Ctx;
   /** Deferred cleanups registered via `defer`, run LIFO when the scope unwinds. */
   readonly defers: DeferCallback[];
   /**

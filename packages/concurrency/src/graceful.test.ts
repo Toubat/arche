@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { CancelledError, defer, io } from "./index";
+import { CancelledError, defer, io, type Logger, resetLogger, setLogger } from "./index";
 
 async function caught(p: PromiseLike<unknown>): Promise<unknown> {
   try {
@@ -10,18 +10,20 @@ async function caught(p: PromiseLike<unknown>): Promise<unknown> {
   }
 }
 
-const realWarn = console.warn;
-afterEach(() => {
-  console.warn = realWarn;
-});
+type LogEntry = { level: string; message: string; fields?: Record<string, unknown> };
 
-function captureWarnings(): string[] {
-  const warnings: string[] = [];
-  console.warn = (...args: unknown[]) => {
-    warnings.push(args.map(String).join(" "));
-  };
-  return warnings;
+function captureLogs(): LogEntry[] {
+  const entries: LogEntry[] = [];
+  const rec =
+    (level: string): Logger["warn"] =>
+    (message, fields) => {
+      entries.push({ level, message, fields });
+    };
+  setLogger({ debug: rec("debug"), info: rec("info"), warn: rec("warn"), error: rec("error") });
+  return entries;
 }
+
+afterEach(resetLogger);
 
 describe("cancelGracefully + cancel timeout", () => {
   test("cancelGracefully awaits teardown (async defer) completion", async () => {
@@ -42,7 +44,7 @@ describe("cancelGracefully + cancel timeout", () => {
   });
 
   test("a body wedged on a raw promise is reaped after the cancel timeout, settling CancelledError + warning", async () => {
-    const warnings = captureWarnings();
+    const entries = captureLogs();
     const handle = io
       .coroutine(async () => {
         // Wedged: never resolves and never observes the signal.
@@ -58,11 +60,13 @@ describe("cancelGracefully + cancel timeout", () => {
     expect(err).toBeInstanceOf(CancelledError);
     expect(elapsed).toBeGreaterThanOrEqual(25);
     expect(elapsed).toBeLessThan(500);
-    expect(warnings.some((w) => w.includes("coroutine hung"))).toBe(true);
+    expect(entries.some((e) => e.level === "warn" && e.fields?.code === "coroutine_hung")).toBe(
+      true,
+    );
   });
 
   test("cancelGracefully on a hung body still resolves (does not block forever)", async () => {
-    captureWarnings();
+    captureLogs();
     const handle = io
       .coroutine(async () => {
         await new Promise<void>(() => {});

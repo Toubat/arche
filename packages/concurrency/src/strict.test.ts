@@ -1,18 +1,20 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { defer, io } from "./index";
+import { defer, io, type Logger, resetLogger, setLogger } from "./index";
 
-const realWarn = console.warn;
-afterEach(() => {
-  console.warn = realWarn;
-});
+type LogEntry = { level: string; message: string; fields?: Record<string, unknown> };
 
-function captureWarnings(): string[] {
-  const warnings: string[] = [];
-  console.warn = (...args: unknown[]) => {
-    warnings.push(args.map(String).join(" "));
-  };
-  return warnings;
+function captureLogs(): LogEntry[] {
+  const entries: LogEntry[] = [];
+  const rec =
+    (level: string): Logger["warn"] =>
+    (message, fields) => {
+      entries.push({ level, message, fields });
+    };
+  setLogger({ debug: rec("debug"), info: rec("info"), warn: rec("warn"), error: rec("error") });
+  return entries;
 }
+
+afterEach(resetLogger);
 
 describe("strict structured concurrency: a child must not outlive its parent", () => {
   test("a bare-spawned child is torn down (its cleanup runs) when the parent completes normally", async () => {
@@ -64,7 +66,7 @@ describe("strict structured concurrency: a child must not outlive its parent", (
   });
 
   test("strict teardown is bounded: a hung background child is reaped by its cancel timeout and the parent still settles", async () => {
-    const warnings = captureWarnings();
+    const entries = captureLogs();
     const start = Date.now();
 
     const result = await io
@@ -81,6 +83,8 @@ describe("strict structured concurrency: a child must not outlive its parent", (
     expect(result).toBe("ok");
     expect(Date.now() - start).toBeGreaterThanOrEqual(25);
     expect(Date.now() - start).toBeLessThan(500);
-    expect(warnings.some((w) => w.includes("coroutine hung"))).toBe(true);
+    expect(entries.some((e) => e.level === "warn" && e.fields?.code === "coroutine_hung")).toBe(
+      true,
+    );
   });
 });

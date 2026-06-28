@@ -7,7 +7,7 @@ Targets: Node, Bun, and Cloudflare Workers/Durable Objects (`workerd`). **No bro
 ## Goals
 
 - Run coroutines, await them, cancel them, with **scope semantics** so a child's lifetime never outlives its parent.
-- Abstract away `AbortSignal` for the common case, but still expose it (`ctx.signal`) for raw interop.
+- Abstract away `AbortSignal` for the common case, but still expose it (`io.context().signal`) for raw interop.
 - Stay non-viral: a coroutine result is an ordinary awaitable; you can cross in and out of "io-land" freely.
 - Provide the concurrent data structures real agent loops need.
 
@@ -61,7 +61,11 @@ Every coroutine owns an internal `AbortSignal` and listens to it. On cancel, tea
 2. Run this coroutine's `defer`s, **LIFO**.
 3. Settle the handle as `CancelledError`.
 
-Cancellation is **injection at framework await points**: the in-flight framework await (`io.sleep`, `chan.receive`, ...) throws `CancelledError`, the body unwinds through `try/finally` + `defer`. JS cannot interrupt a raw `await somePromise()` or a tight sync loop, so for those you cooperate via `ctx.signal` / `ctx.throwIfCancelled()`, or thread `ctx.signal` into the raw call (`fetch(url, { signal: ctx.signal })`).
+Cancellation is **injection at framework await points**: the in-flight framework await (`io.sleep`, `chan.receive`, ...) throws `CancelledError`, the body unwinds through `try/finally` + `defer`. JS cannot interrupt a raw `await somePromise()` or a tight sync loop, so for those you grab the context on demand via `io.context()` and cooperate (`ctx.throwIfCancelled()`), or thread `ctx.signal` into the raw call (`fetch(url, { signal: io.context().signal })`).
+
+**Spawn short-circuit.** If a coroutine is spawned into an **already-aborted** scope (e.g. an already-cancelled parent), its body never runs at all — the handle settles `CancelledError` immediately. No side effects, no first-await needed.
+
+**Cancellation wins.** Once a coroutine's own scope is cancelled, it can never report success. If the body swallows the injected `CancelledError` and returns a value, the handle still settles `CancelledError` — you cannot accidentally make a cancelled coroutine "look successful" (the classic asyncio footgun). After cancellation, any further framework await also re-raises `CancelledError` immediately (level-triggered, like Trio), so the only way a body even reaches its `return` is by explicitly catching cancellation — and even then the value is discarded. (A coroutine that throws a _different_ error while cancelled propagates that error as-is, for diagnostics.)
 
 **Idempotent.** Cancellation routinely arrives from several sources at once (parent teardown, `io.withTimeout`, `io.all` fail-fast, a user handle). An internal flag guarantees the teardown sequence runs **exactly once**; later `cancel()` calls are no-ops, and `cancelGracefully()` just awaits the in-flight teardown. (`spawn` is one-shot/throws; `cancel` converges/no-ops — they are deliberately asymmetric.)
 
@@ -108,18 +112,18 @@ await io
 
 ## `defer` — cleanup that actually runs
 
-`defer` is a **global function** (not `ctx.defer`); it uses ALS to attach the cleanup to the current ambient coroutine. Its callback receives **its own `ctx`**, so cleanup is itself a scoped unit:
+`defer` is a **global function** (not `ctx.defer`); it uses ALS to attach the cleanup to the current ambient coroutine. The callback takes no arguments; if it needs the cleanup signal it calls `io.context()`, so cleanup is itself a scoped unit:
 
 ```ts
 io.coroutine(async () => {
   const ws = await connect();
-  defer((ctx) => ws.close()); // ctx.signal here is the live cleanup signal
+  defer(() => ws.close()); // need the live cleanup signal? io.context().signal
   // ...
 });
 ```
 
 - Defers may be async and are **awaited sequentially, LIFO**.
-- Defers run **shielded**: during teardown the parent signal is already aborted, so each defer runs under a **fresh, non-aborted cleanup `ctx.signal`** (bounded by the defer timeout). This is what lets `await ws.close()` / `await flush()` actually complete.
+- Defers run **shielded**: during teardown the parent signal is already aborted, so each defer runs under a **fresh, non-aborted cleanup context** — `io.context()` inside a defer reports `cancelled === false` and its `signal` is bounded by the defer timeout. This is what lets `await ws.close()` / `await flush()` actually complete.
 
 ## Errors (do not flow up the tree)
 
@@ -154,11 +158,31 @@ class WaitGroupError extends ConcurrencyError {
 }
 ```
 
-Each carries a literal `code` so callers can use both `instanceof` and an exhaustive `switch (err.code)`.
+Each carries a literal `code` (typed union `ConcurrencyErrorCode`) so callers can use both `instanceof` and an exhaustive `switch (err.code)`.
 
-## `ctx`
+## Logging
 
-The object passed to a coroutine body (and to a `defer` callback) is deliberately thin:
+Diagnostics (zombie reaping, defer-timeout, unhandled background errors) go through a tiny swappable seam in `log.ts`, not `console.*` directly:
+
+```ts
+interface Logger {
+  debug(message: string, fields?: Record<string, unknown>): void;
+  info(message: string, fields?: Record<string, unknown>): void;
+  warn(message: string, fields?: Record<string, unknown>): void;
+  error(message: string, fields?: Record<string, unknown>): void;
+}
+log; // library-wide logger (named export; delegates to the active logger)
+setLogger(logger); // swap in LogTape / Sentry / pino-browser
+resetLogger(); // restore the default
+```
+
+- The **default** is a zero-dep, `console`-backed **structured-JSON** logger: each line is `JSON.stringify({ level, message, ...fields })`, routed to the matching `console` method (`warn`→`console.warn`, etc.). This is exactly what Cloudflare Workers Logs indexes natively, and `console.warn`/`console.error` map to the right severity.
+- Heavyweight Node loggers (pino/winston) **do not run in `workerd`** (Node deps + long-lived transports), so the library ships no logging dependency and lets the host pick a runtime-appropriate backend. LogTape and Sentry's logger run natively across Node/Bun/Deno/edge if you want a richer backend.
+- Warnings are structured: zombie reaping logs `{ code: "coroutine_hung", coroutine, cancelTimeoutMs }`; defer-timeout logs `{ code: "defer_timeout", coroutine, deferTimeoutMs, remaining }`.
+
+## `ctx` (via `io.context()`)
+
+Coroutine bodies and `defer` callbacks take **no parameters**. When a body needs cancellation it fetches its context on demand with `io.context()`, so the common case (a body that never touches cancellation) stays parameter-free. The context is deliberately thin:
 
 ```ts
 interface Ctx {
@@ -167,7 +191,13 @@ interface Ctx {
   throwIfCancelled(): void; // cooperative checkpoint -> throws CancelledError
   readonly name?: string; // optional label for diagnostics (zombie/unhandled logs)
 }
+
+io.context(): Ctx; // current coroutine's context; throws outside a coroutine
 ```
+
+- `io.context()` reads the ambient scope, so it works after any number of `await` hops and inside `Promise.all` / `.then` callbacks.
+- Inside a `defer` it returns the **shielded cleanup context** (`cancelled === false`).
+- Called outside any coroutine it **throws** `ConcurrencyError("io.context() called outside a coroutine")` rather than handing back a non-cancellable context that would make cancellation silently no-op.
 
 Spawning children is **not** on `ctx` — you call the ambient `io.coroutine(...).spawn()` / `io.background(...)`, and ALS wires the parent.
 
@@ -175,11 +205,12 @@ Spawning children is **not** on `ctx` — you call the ambient `io.coroutine(...
 
 ```ts
 // --- lifecycle ---
-io.coroutine<T>(fn: (ctx: Ctx) => Promise<T>): Coroutine<T>;
+io.coroutine<T>(fn: () => Promise<T>): Coroutine<T>;
 coro.spawn(opts?: { cancelTimeout?: number; deferTimeout?: number }): RoutineHandle<T>;
 io.background<T>(coros: Coroutine<T>[]): RoutineHandle<T[]>; // spawn many, don't await for results
 io.sleep(ms: number): Promise<void>;                        // plain thenable, cancelled via ambient scope
-defer(fn: (ctx: Ctx) => void | Promise<void>): void;        // global; LIFO; shielded
+io.context(): Ctx;                                          // current coroutine's ctx; throws if none
+defer(fn: () => void | Promise<void>): void;                // global; LIFO; shielded
 
 interface Coroutine<T> { spawn(opts?): RoutineHandle<T> }    // inert, one-shot, NOT thenable
 interface RoutineHandle<T> extends PromiseLike<T> {
