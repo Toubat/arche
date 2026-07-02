@@ -1,0 +1,20 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "d6e998323615",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "files_touched": [
+    "packages/concurrency/src/channel.ts",
+    "packages/concurrency/src/combinators.ts",
+    "packages/concurrency/src/semaphore.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d6/e998323615/0/metadata.json",
+      "transcript": "/d6/e998323615/0/full.jsonl",
+      "content_hash": "/d6/e998323615/0/content_hash.txt",
+      "prompt": "/d6/e998323615/0/prompt.txt"
+    }
+  ]
+}

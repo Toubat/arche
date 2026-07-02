@@ -1,0 +1,283 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "d6e998323615",
+  "session_id": "6ba200ff-f026-498c-b12d-b94ef255458f",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-02T01:38:45.572789Z",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "save_step_count": 7,
+  "files_touched": [
+    "packages/concurrency/src/channel.ts",
+    "packages/concurrency/src/combinators.ts",
+    "packages/concurrency/src/semaphore.ts"
+  ],
+  "agent": "Cursor",
+  "model": "gpt-5.5-medium",
+  "turn_id": "475d3168c942",
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-cursor-create-skill-2026-06-26T01:08:40.78276Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "create-skill"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "4e8082f49bd2",
+      "timestamp": "2026-06-26T01:08:40.78276Z",
+      "native": {
+        "command": "/create-skill"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/create-skill",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-sync-mem-2026-06-26T01:22:18.977169Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "sync-mem"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "7beba1d833b3",
+      "timestamp": "2026-06-26T01:22:18.977169Z",
+      "native": {
+        "command": "/sync-mem"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/sync-mem",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-using-entire-2026-06-26T04:43:23.333592Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "using-entire"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "3e5330001cd5",
+      "timestamp": "2026-06-26T04:43:23.333592Z",
+      "native": {
+        "command": "/using-entire"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/using-entire",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-tdd-2026-06-26T08:57:49.022705Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "tdd"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "05ebb56735c7",
+      "timestamp": "2026-06-26T08:57:49.022705Z",
+      "native": {
+        "command": "/tdd"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/tdd",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-sync-mem-2026-06-27T16:39:10.460289Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "sync-mem"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "92c293b6b100",
+      "timestamp": "2026-06-27T16:39:10.460289Z",
+      "native": {
+        "command": "/sync-mem"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/sync-mem",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-code-reviewer-2026-06-28T04:49:22.539915Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "code-reviewer"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "c56f200fef65",
+      "timestamp": "2026-06-28T04:49:22.539915Z",
+      "native": {
+        "command": "/code-reviewer"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/code-reviewer",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-session-handoff-2026-07-02T01:27:29.237465Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "session-handoff"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "6f3ccbd2d9f2",
+      "timestamp": "2026-07-02T01:27:29.237465Z",
+      "native": {
+        "command": "/session-handoff"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/session-handoff",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-cursor-session-handoff-2026-07-02T01:33:11.155342Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "session-handoff"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "77228f248eae",
+      "timestamp": "2026-07-02T01:33:11.155342Z",
+      "native": {
+        "command": "/session-handoff"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/session-handoff",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 55,
+    "context_tokens": 284176,
+    "context_window_size": 300000
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-02T01:38:45.535124Z",
+    "agent_lines": 20,
+    "agent_removed": 12,
+    "human_added": 528,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 548,
+    "total_lines_changed": 560,
+    "agent_percentage": 5.714285714285714,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 20,
+      "agent_lines_removed": 12
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 20,
+      "agent_lines_removed": 12
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 20,
+      "agent_lines_removed": 12
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 2231,
+      "user_lines_removed": 0,
+      "agent_lines_added": 20,
+      "agent_lines_removed": 12,
+      "user_added_per_file": {
+        ".agents/skills/address-findings/SKILL.md": 155,
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 84,
+        "agent/skills/address-findings/SKILL.md": 148,
+        "agent/skills/explain/SKILL.md": 31,
+        "agent/skills/recall/SKILL.md": 121,
+        "agent/skills/replay/SKILL.md": 139,
+        "agent/skills/review/SKILL.md": 214,
+        "agent/skills/review/references/review-rules.md": 87,
+        "agent/skills/search/SKILL.md": 68,
+        "agent/skills/session-crosslink/SKILL.md": 139,
+        "agent/skills/session-handoff/SKILL.md": 135,
+        "agent/skills/session-to-skill/SKILL.md": 208,
+        "agent/skills/teach/SKILL.md": 128,
+        "agent/skills/using-entire/SKILL.md": 147,
+        "agent/skills/what-happened/SKILL.md": 325,
+        "skills-lock.json": 77
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 341,
+      "user_lines_removed": 0,
+      "agent_lines_added": 20,
+      "agent_lines_removed": 12,
+      "user_added_per_file": {
+        ".agents/skills/address-findings/SKILL.md": 155,
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 84,
+        "skills-lock.json": 77
+      }
+    }
+  ]
+}

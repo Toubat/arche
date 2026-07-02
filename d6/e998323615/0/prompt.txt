@@ -1,0 +1,97 @@
+Interrupt a bit:
+
+1. @arche/packages/concurrency/src/combinators.test.ts:65 do we want this behaavior of tear down rest for race? Just asking, not sure which one is better.
+
+2. for helper methods like all / race / allSeattle / withTimeout, etc
+
+Should the underling argument accepts Cotoutine | RoutineHandle? Also not sure what would be the best UX for development
+
+3. @future.ts (9-18) I wish the cancellability to be directly part of this promise, not the current way where you need an extra `cancellable` @future.ts (37-42) since this would leak the unresolved Promise I believe
+
+---
+
+> @future.ts (37-42) 
+Yes! define a specific type for this union as well as a TODO. After you have finished this phase. Don't do it now. 
+
+Continue your work flow. DO #3 now tho
+
+---
+
+@arche/packages/concurrency/src/channel.test.ts can you test under multiple consumer do the for await style, they only get paritions and no overlapping items. 
+
+And that if one or few consumer mid-cancelled, the rest (after finshed) still gets all items with partitioned item per consumer.
+
+---
+
+My expectation:
+1. 2 should not in chan
+2. 2 should not in chan as well
+
+But don't guess, extend tests
+
+---
+
+1. multiple for-await consumers partition items with no overlap Spawns 3 coroutines each consuming the same channel via for await, sends 30 items, then closes. Asserts the disjoint-union invariant: buckets.flat() sorted equals 0..29 (nothing lost or duplicated) and new Set(...).size === 30 (no item delivered to more than one consumer).
+
+2. when some for-await consumers are cancelled mid-stream, no item is lost or duplicated Spawns 4 consumers, runs a paced background producer (io.sleep(1) between sends so cancellation lands mid-stream), then cancels 2 consumers after io.sleep(8). It asserts:
+
+The 2 cancelled handles reject with CancelledError, the 2 survivors resolve cleanly.
+The combined union across all buckets (including whatever a cancelled consumer pulled before stopping) is exactly 0..39 with no duplicates — proving no item was lost to an abandoned/blocked receiver and none was double-delivered.
+The survivors kept consuming after the others were cancelled.
+The key correctness property being exe
+
+So just to clarify. In addition to test, is there any corectness guarentee for these properties? If so, show me actual code part
+
+---
+
+If you'd want strict "stop pulling the instant you're cancelled" semantics, that would require #pull/#receive to short-circuit on currentScope()?.signal.aborted before taking a ready value — a deliberate change with its own trade-off (a cancelled consumer's already-reserved buffer slot would then be redirected to a survivor). Want me to add an explicit test pinning down this caveat (a cancelled consumer may drain remaining buffered items but the union still equals N), or leave the current behavior documented as-is?
+
+For this, first write me a red test
+
+---
+
+yeah, this is bad.... ch.receive() is like other coroutine spawn. Once parent coro aborted, no child coro should run
+
+---
+
+@channel.ts (62-71) Just thinking, for data structure method. would it make sense to wrap it with coroutine.spawn so it behave like a promise while having the lifecycle awareness?
+
+---
+
+yeah, a is a good idea, extend short-circuit as well
+
+---
+
+/code-reviewer
+
+---
+
+syntax improvement:
+
+for internal library code try not using .then @semaphore.ts (26-27) 
+
+format every method as async/await properly to improve readability
+
+---
+
+It is really hard to understand around WaitQueue as a powerful shared primitive and how it builds channel / mutex, etc...
+
+/canvas help me understand
+
+---
+
+It is really hard to understand around WaitQueue as a powerful shared primitive and how it builds channel / mutex, etc...
+
+/canvas help me understand
+
+---
+
+/session-handoff
+
+---
+
+/session-handoff Do an agent handoff about the whole session context!
+
+---
+
+make TODO comprehensive! and re-draft
