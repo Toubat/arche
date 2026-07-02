@@ -3,7 +3,7 @@
   "checkpoint_id": "31af3483845f",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 7,
+  "checkpoints_count": 12,
   "files_touched": [
     ".memory/2026-06-26-concurrency-library.md",
     "packages/concurrency/DESIGN.md",
@@ -22,6 +22,19 @@
       "transcript": "/31/af3483845f/0/full.jsonl",
       "content_hash": "/31/af3483845f/0/content_hash.txt",
       "prompt": "/31/af3483845f/0/prompt.txt"
+    },
+    {
+      "metadata": "/31/af3483845f/1/metadata.json",
+      "transcript": "/31/af3483845f/1/full.jsonl",
+      "content_hash": "/31/af3483845f/1/content_hash.txt",
+      "prompt": "/31/af3483845f/1/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 41688,
+    "cache_creation_tokens": 259976,
+    "cache_read_tokens": 12553395,
+    "output_tokens": 80140,
+    "api_call_count": 97
+  }
 }

@@ -1,0 +1,246 @@
+/using-entire 
+
+also, below is the handoff doc from previous agent:
+
+Handing off Cursor session — Self-handoff (no other sessions in this worktree) — 53 turns, ID 6ba200ff.
+
+Task Overview
+This session started with Cloudflare Durable Objects setup/research, moved through OpenCode/Sandcastle architecture exploration, then became a deep design + TDD implementation session for @arche/concurrency: a lightweight, non-viral structured-concurrency library for agent loops.
+
+Core goals:
+
+Use Durable Objects / workerd as a possible local + cloud control plane.
+Learn from OpenCode and Sandcastle architecture.
+Build @arche/concurrency under packages/concurrency.
+Provide cancellable coroutines, strict structured concurrency, cancellation-safe data structures, and a simple io.* API.
+Preserve durable session memory in .memory/.
+Produce a canvas explaining WaiterQueue.
+Current State
+@arche/concurrency is implemented through Milestone 2 and verified:
+
+121 tests passing
+0 failing
+100% line coverage
+tsc --noEmit clean
+Biome clean
+Major implemented pieces:
+
+io.coroutine
+RoutineHandle
+io.context
+defer
+io.sleep
+io.all
+io.race
+io.allSettled
+io.withTimeout
+io.withRetry
+io.spawn
+io.future
+io.channel
+io.semaphore
+io.mutex
+io.waitGroup
+io.cancelGlobal
+io.cancelGlobalGracefully
+WaiterQueue
+structured logging via log.ts
+Recent concrete changes:
+
+Renamed io.background to io.spawn.
+Made io.spawn polymorphic for single coroutine or list of coroutines.
+Added rejectIfCancelled() in scope.ts.
+Applied strict blocking-op short-circuit to:
+channel.send
+channel.receive / #receive
+semaphore.acquire
+waitGroup.wait
+Added channel tests for:
+multiple for await consumers partitioning items with no overlap
+mid-cancelled consumers not losing/duplicating items
+parked sender values being dropped on cancel/close
+cancelled coroutine not draining buffered values
+Added semaphore/waitGroup strict cancellation tests.
+Converted internal .then usage to async/await where appropriate.
+Created canvas: waiter-queue-primitive
+Important Decisions
+No Effect dependency. Effect’s concurrency model is attractive, but too viral for this codebase.
+No ctx parameter in coroutine bodies. Use io.context() opt-in access instead.
+No ctx.spawn. Spawning remains explicit through io.coroutine(...).spawn() or io.spawn(...).
+Coroutines are lazy and one-shot. Starting twice throws CoroutineAlreadyStartedError.
+Cancellation wins. A cancelled coroutine cannot report success even if it catches CancelledError.
+Spawn short-circuit. If spawned into an already-aborted scope, the body never runs.
+Blocking-op short-circuit. An aborted scope cannot synchronously drain buffered values, take free permits, or resolve zero-counter waits.
+Do not wrap data-structure ops in coroutines. That risks value loss because cancellation-wins could rewrite successful receives into CancelledError.
+Channel commitment rule: a value is committed only once buffered or handed to a receiver. Parked sender payloads are in-flight and are dropped on sender cancel/channel close.
+WaiterQueue is the shared blocking primitive. Structures own local state; WaiterQueue owns parking/waking/cancel-safe waiter removal.
+Comprehensive TODO
+Immediate Code TODOs
+Implement CoroutineLike<T>:
+
+Define named union, likely in types.ts: type CoroutineLike<T> = Coroutine<T> | (() => Promise<T>).
+Apply to io.all, io.race, io.allSettled, and io.spawn.
+Wrap raw async functions with io.coroutine(fn) internally.
+Preserve ownership semantics: do not accept RoutineHandle.
+Add tests for raw async body inputs for each combinator.
+Add tests proving raw bodies are spawned under the combinator/current scope and get cancelled on parent teardown.
+Update DESIGN.md.
+Update .memory/2026-06-26-concurrency-library.md.
+Decide whether io.withTimeout and io.withRetry should accept CoroutineLike<T> too:
+
+Current TODO was for all/race/allSettled/spawn.
+withTimeout(ms, coro) could reasonably accept raw body.
+withRetry(factory) probably should remain factory-returning-fresh-work, but the factory could return CoroutineLike<T>.
+Need design decision + tests before changing.
+Consider adding io.any:
+
+First to resolve, ignoring rejections until all reject.
+Must tear down losers after winner.
+Must reject with aggregate/all errors if none resolve.
+Must preserve strict structured teardown.
+Needs cancellation tests.
+Cancellation Semantics TODOs
+Audit every framework await/data-structure op for already-aborted fast paths:
+future already binds intrinsic cancellation.
+channel, semaphore, waitGroup now short-circuit.
+Re-check future additions follow rejectIfCancelled().
+Add a regression test pattern/helper for “aborted scope makes no progress even synchronously”.
+Consider whether rejectIfCancelled() should throw synchronously or return rejected promise:
+Current design returns Promise<never> | undefined to fit async APIs.
+Keep unless a type/readability issue appears.
+Consider naming / diagnostic support:
+Ctx.name exists but is not wired to SpawnOptions.
+Add name?: string to spawn options only if it improves logs meaningfully.
+Add tests for log fields if implemented.
+Data Structure TODOs
+Pub/sub broadcast primitive:
+Distinct from channel.
+Every subscriber sees every value.
+Needs unsubscribe/cancellation semantics.
+Needs backpressure/drop policy decision.
+Needs replay/resume decision if used for agent event streams.
+Nursery/group object:
+Possible API: group.spawn, group.join, maybe fail-fast option.
+Must clarify how it differs from io.all / strict parent scope.
+Needs ownership and teardown rules.
+Channel enhancements to consider:
+trySend / tryReceive?
+close(error?)?
+Explicit drain()?
+Async iterator cancellation semantics docs.
+Avoid feature creep unless needed by agent loop.
+Semaphore enhancements to consider:
+Weighted semaphore?
+tryAcquire?
+Timeout helper via io.withTimeout.
+Testing TODOs
+Keep using TDD: RED test first for semantic changes.
+Run full package verification after substantive changes:
+bunx tsc --noEmit
+bunx biome check src
+bun test
+Add tests for CoroutineLike<T>:
+raw body success
+raw body failure
+raw body cancellation
+raw body teardown under io.race
+raw body in io.spawn(single)
+raw body in io.spawn(list)
+ensure RoutineHandle is rejected at type level/not part of union
+Add tests for logging behavior:
+io.spawn(rawBody) ignored failure logs once.
+awaited io.spawn(rawBody) behavior: currently logs and rejects to awaiter; decide if this redundancy is intended.
+Consider running stress-ish deterministic tests:
+many channel producers/consumers
+many cancellations racing close
+semaphore acquire/release under cancellation
+waitGroup waiters cancelled while count hits zero
+Documentation TODOs
+Update packages/concurrency/DESIGN.md after each semantic change.
+Keep DESIGN.md examples current:
+replace any stale io.background with io.spawn.
+reflect CoroutineLike<T> once implemented.
+Update .memory/2026-06-26-concurrency-library.md after changes with verified facts only.
+Maybe add a README.md for @arche/concurrency once API stabilizes:
+quickstart
+mental model
+cancellation rules
+common patterns
+anti-patterns
+Canvas follow-up:
+Optional: make waiter-queue-primitive interactive with step-through buttons for channel rendezvous traces.
+Cloudflare / DO TODOs
+Preserve wrangler.toml preference.
+Re-check apps/durable-objects if continuing that path:
+bindings
+migrations
+SQLite schema/table creation
+stateful counter
+local wrangler dev
+dynamic worker experiment
+filesystem import error docs
+If using DOs for agent control plane:
+define session ownership model
+decide single writer vs multiple writer
+decide event log persistence
+decide resume semantics for late-joining clients
+decide local-only vs cloud-hosted packaging boundary
+Architecture TODOs
+Continue shaping the intended system around:
+Client: TUI/web display.
+Agent/Worker: agent loop, coordination, state, multi-client handling.
+Workspace: filesystem + process abstraction.
+Use @arche/concurrency as the internal lifecycle primitive for agent worker loops.
+Decide whether Durable Object maps to:
+one object per session
+one object per workspace
+one object per user/project
+Decide event bus model:
+competing-consumer channel is not pub/sub.
+agent event streams likely need pub/sub or persisted append-only log.
+Repo Hygiene TODOs
+Beware dirty tree and stale git baseline.
+Do not revert unrelated changes.
+packages/concurrency/coverage/ is generated/untracked; likely should be gitignored or deleted before commit if not wanted.
+Commit only when explicitly asked.
+Before commit/PR:
+inspect status/diff
+avoid committing secrets/env files
+run verification
+update docs/memory if needed
+Context to Preserve
+User preferences:
+
+Wants precise, verified answers. “Don’t guess” matters.
+Strongly prefers TDD for concurrency semantics.
+Wants code review via subagents when explicitly requested.
+Likes concise but durable memory artifacts.
+Wants internal library code to use async/await over .then, except public thenable contracts / low-level promise mirroring.
+Dislikes unexplained API concepts.
+Wants simple, non-viral abstractions.
+Prefers current codebase patterns over extra dependencies.
+Comfortable with blunt wording; still keep responses useful and grounded.
+Unanswered Question
+Previous unanswered question was:
+
+“Want me to add an interactive element (e.g. a step-through button that advances the rendezvous trace one queue-operation at a time), or is the static explanation enough?”
+
+---
+
+continue
+
+---
+
+can you test cases where child or event nested backgrounded routine forced exit when parent exit? Is this been backed by tests yet? If not, add these
+
+---
+
+test a frozen always awaiting promise inside a coroutine does not prevent corotine shutdown when parent exits or when routine itself been killed. Parent can still properly exit and hanging routines are moved to zombie zone.
+
+---
+
+need to test what going on for await new Promise(() => { ... }) that always wait
+
+---
+
+use mock timer?

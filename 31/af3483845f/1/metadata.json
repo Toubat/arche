@@ -1,0 +1,143 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "31af3483845f",
+  "session_id": "db09a0d4-e321-4eba-948a-f161943ce4c1",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-02T07:38:29.391823Z",
+  "branch": "main",
+  "checkpoints_count": 5,
+  "save_step_count": 5,
+  "files_touched": [
+    ".memory/2026-06-26-concurrency-library.md",
+    "packages/concurrency/DESIGN.md",
+    "packages/concurrency/src/combinators.test.ts",
+    "packages/concurrency/src/combinators.ts",
+    "packages/concurrency/src/coroutine.test.ts",
+    "packages/concurrency/src/coroutine.ts",
+    "packages/concurrency/src/graceful.test.ts",
+    "packages/concurrency/src/index.ts",
+    "packages/concurrency/src/nested.test.ts",
+    "packages/concurrency/src/types.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "855d62d378d1",
+  "token_usage": {
+    "input_tokens": 41688,
+    "cache_creation_tokens": 259976,
+    "cache_read_tokens": 12553395,
+    "output_tokens": 80140,
+    "api_call_count": 97
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-using-entire-2026-07-02T01:37:23.5158Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "using-entire"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "f852796d1b32",
+      "timestamp": "2026-07-02T01:37:23.5158Z",
+      "native": {
+        "command": "/using-entire"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/using-entire",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01Njzi3UWVc37Y3ddAbDYcax",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:test-driven-development"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "855d62d378d1",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 80,
+        "end": 81,
+        "entry_ids": [
+          "2a3b049b-2be6-4cae-aed4-ab1fc8941b79"
+        ],
+        "tool_use_id": "toolu_01Njzi3UWVc37Y3ddAbDYcax"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01Njzi3UWVc37Y3ddAbDYcax"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:test-driven-development",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-02T07:38:29.356107Z",
+    "agent_lines": 429,
+    "agent_removed": 66,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 429,
+    "total_lines_changed": 495,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 111,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "packages/concurrency/src/combinators.test.ts": 111
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 182,
+      "agent_lines_removed": 45
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 255,
+      "agent_lines_removed": 45
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 345,
+      "agent_lines_removed": 45
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 466,
+      "agent_lines_removed": 49
+    }
+  ]
+}
