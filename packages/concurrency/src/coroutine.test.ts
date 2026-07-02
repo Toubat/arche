@@ -1,7 +1,16 @@
 import { describe, expect, test } from "bun:test";
-import { CoroutineAlreadyStartedError, io } from "./index";
+import { COROUTINE, CoroutineAlreadyStartedError, io } from "./index";
 
 describe("coroutine lifecycle", () => {
+  test("io.coroutine brands its result with the COROUTINE symbol; bare functions are unbranded", () => {
+    const coro = io.coroutine(async () => 1);
+    expect(COROUTINE in coro).toBe(true);
+    // A bare async body (the other CoroutineLike arm) must NOT carry the brand,
+    // so combinators can discriminate nominally instead of via typeof.
+    const body = async () => 1;
+    expect(COROUTINE in body).toBe(false);
+  });
+
   test("coroutine is lazy: the body does not run until spawn()", async () => {
     let ran = false;
     const coro = io.coroutine(async () => {

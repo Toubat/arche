@@ -53,3 +53,70 @@ describe("nested coroutines", () => {
     expect(result).toBe(3);
   });
 });
+
+describe("nested background routines: teardown is transitive", () => {
+  test("a background grandchild is forced to exit, leaf-first, when the parent exits normally", async () => {
+    const order: string[] = [];
+    await io
+      .coroutine(async () => {
+        io.spawn(async () => {
+          defer(() => order.push("child cleanup"));
+          io.spawn(async () => {
+            defer(() => order.push("grandchild cleanup"));
+            await io.sleep(1000); // would outlive everyone if teardown were not transitive
+          });
+          await io.sleep(1000);
+        });
+        await io.sleep(5); // let the background chain park, then exit
+        order.push("parent done");
+      })
+      .spawn();
+    expect(order).toEqual(["parent done", "grandchild cleanup", "child cleanup"]);
+  });
+
+  test("cancelling the parent handle cascades through background descendants leaf-first", async () => {
+    const order: string[] = [];
+    const handle = io
+      .coroutine(async () => {
+        defer(() => order.push("parent"));
+        io.spawn(async () => {
+          defer(() => order.push("child"));
+          io.spawn(async () => {
+            defer(() => order.push("grandchild"));
+            await io.sleep(1000);
+          });
+          await io.sleep(1000);
+        });
+        await io.sleep(1000);
+      })
+      .spawn();
+    const settled = caught(handle);
+    handle.cancel();
+    expect(await settled).toBeInstanceOf(CancelledError);
+    expect(order).toEqual(["grandchild", "child", "parent"]);
+  });
+
+  test("the parent does not settle until a background grandchild's async cleanup completes", async () => {
+    const order: string[] = [];
+    const result = await io
+      .coroutine(async () => {
+        io.spawn(async () => {
+          io.spawn(async () => {
+            defer(async () => {
+              await io.sleep(50);
+              order.push("grandchild cleanup complete");
+            });
+            await io.sleep(2000);
+          });
+          await io.sleep(2000);
+        });
+        await io.sleep(5);
+        order.push("parent body done");
+        return "result";
+      })
+      .spawn();
+    // The awaited handle only settles after the grandchild's async defer finished.
+    expect(order).toEqual(["parent body done", "grandchild cleanup complete"]);
+    expect(result).toBe("result");
+  });
+});

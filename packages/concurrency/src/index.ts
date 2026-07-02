@@ -54,6 +54,7 @@ export type {
   Channel,
   Coroutine,
   CoroutineBody,
+  CoroutineLike,
   Ctx,
   DeferCallback,
   Future,
@@ -64,4 +65,5 @@ export type {
   SpawnOptions,
   WaitGroup,
 } from "./types";
+export { COROUTINE } from "./types";
 export { defer };

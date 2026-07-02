@@ -209,23 +209,33 @@ Spawning children is **not** on `ctx` — you call the ambient `io.coroutine(...
 // --- lifecycle ---
 io.coroutine<T>(fn: () => Promise<T>): Coroutine<T>;
 coro.spawn(opts?: { cancelTimeout?: number; deferTimeout?: number }): RoutineHandle<T>;
-io.spawn<T>(coro: Coroutine<T>): RoutineHandle<T>;          // spawn one, don't await for results
-io.spawn<T>(coros: Coroutine<T>[]): RoutineHandle<T[]>;     // spawn many, don't await for results
+io.spawn<T>(coro: CoroutineLike<T>): RoutineHandle<T>;      // spawn one, don't await for results
+io.spawn<T>(coros: CoroutineLike<T>[]): RoutineHandle<T[]>; // spawn many, don't await for results
 io.sleep(ms: number): Promise<void>;                        // plain thenable, cancelled via ambient scope
 io.context(): Ctx;                                          // current coroutine's ctx; throws if none
 defer(fn: () => void | Promise<void>): void;                // global; LIFO; shielded
 
-interface Coroutine<T> { spawn(opts?): RoutineHandle<T> }    // inert, one-shot, NOT thenable
+interface Coroutine<T> {                                     // inert, one-shot, NOT thenable
+  readonly [COROUTINE]: true;  // nominal brand: only io.coroutine mints coroutines
+  spawn(opts?): RoutineHandle<T>;
+}
 interface RoutineHandle<T> extends PromiseLike<T> {
   cancel(): void;
   cancelGracefully(opts?: { timeoutMs?: number }): Promise<void>;
   readonly cancelled: boolean;
 }
 
-// --- combinators (return RoutineHandle, consume inert coroutines, fail-fast) ---
-io.all<T>(coros: Coroutine<T>[]): RoutineHandle<T[]>;
-io.race<T>(coros: Coroutine<T>[]): RoutineHandle<T>;
-io.allSettled<T>(coros: Coroutine<T>[]): RoutineHandle<SettledResult<T>[]>;
+// --- combinators (return RoutineHandle, consume CoroutineLike members, fail-fast) ---
+// A member is an inert coroutine or a bare async body (wrapped in io.coroutine
+// internally, so it spawns under the combinator's scope). Discriminated at runtime
+// by the nominal COROUTINE brand (Symbol.for("@arche/concurrency.coroutine")), not
+// by shape. A running RoutineHandle is NOT accepted: it is already parented, so
+// the combinator couldn't own its teardown.
+type CoroutineLike<T> = Coroutine<T> | (() => Promise<T>);
+
+io.all<T>(coros: CoroutineLike<T>[]): RoutineHandle<T[]>;
+io.race<T>(coros: CoroutineLike<T>[]): RoutineHandle<T>;
+io.allSettled<T>(coros: CoroutineLike<T>[]): RoutineHandle<SettledResult<T>[]>;
 io.withTimeout<T>(ms: number, coro: Coroutine<T>): RoutineHandle<T>;   // rejects TimeoutError on deadline
 io.withRetry<T>(factory: () => Coroutine<T>, opts?: RetryOptions): RoutineHandle<T>; // never retries CancelledError
 
@@ -305,7 +315,7 @@ io.coroutine(async () => {
 
 ## Open TODOs
 
-- **Combinators accept bare bodies**: let `io.all` / `io.race` / `io.allSettled` / `io.spawn` take `Coroutine<T> | (() => Promise<T>)` (a named `CoroutineLike<T>` union), wrapping raw async functions in `io.coroutine` internally to cut boilerplate. `io.spawn` already accepts a single `Coroutine` or a list of them; the bare-body axis is what remains. Keep `Coroutine`-only ownership semantics; do **not** accept `RoutineHandle` (already-parented, can't be torn down by the combinator).
+- **`CoroutineLike` for `io.withTimeout` / `io.withRetry`**: `withTimeout(ms, body)` could reasonably take a bare body; `withRetry` should stay factory-based (fresh work per attempt), but the factory could return a `CoroutineLike<T>`. Needs a design decision + tests. (`io.all` / `io.race` / `io.allSettled` / `io.spawn` already accept `CoroutineLike<T>`.)
 - **Pub/sub broadcast** primitive (every subscriber sees every value) — `channel` is competing-consumer only.
 - **Structured nursery/group** object (`group.spawn` + `group.join`, auto-tracked, auto-cancel on error).
 - **Go-style context values** (request-scoped key/value propagation down the tree).

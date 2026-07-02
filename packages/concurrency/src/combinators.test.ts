@@ -5,6 +5,7 @@ import {
   io,
   type LogFields,
   type LogLevel,
+  type RoutineHandle,
   resetLogger,
   setLogger,
   TimeoutError,
@@ -273,6 +274,116 @@ describe("io.withRetry", () => {
     expect(expDelays[0]).toBeGreaterThanOrEqual(0);
     expect(expDelays[0]).toBeLessThan(3);
     expect(expDelays[1]).toBeLessThan(5);
+  });
+});
+
+describe("CoroutineLike (raw async bodies)", () => {
+  test("io.all accepts raw async bodies mixed with coroutines, in input order", async () => {
+    const result = await io.all([
+      async () => {
+        await io.sleep(10);
+        return "a";
+      },
+      io.coroutine(async () => "b"),
+    ]);
+    expect(result).toEqual(["a", "b"]);
+  });
+
+  test("io.all fail-fast applies when a raw body rejects", async () => {
+    const boom = new Error("boom");
+    const cleaned: string[] = [];
+    const handle = io.all([
+      async () => {
+        await io.sleep(5);
+        throw boom;
+      },
+      async () => {
+        defer(() => cleaned.push("sibling cleaned"));
+        await io.sleep(1000);
+      },
+    ]);
+    expect(await caught(handle)).toBe(boom);
+    expect(cleaned).toEqual(["sibling cleaned"]);
+  });
+
+  test("cancelling the handle cancels raw-body members", async () => {
+    const cleaned: string[] = [];
+    const handle = io.all([
+      async () => {
+        defer(() => cleaned.push("raw"));
+        await io.sleep(1000);
+      },
+    ]);
+    handle.cancel();
+    expect(await caught(handle)).toBeInstanceOf(CancelledError);
+    expect(cleaned).toEqual(["raw"]);
+  });
+
+  test("io.race tears down a losing raw body before settling", async () => {
+    const cleaned: string[] = [];
+    const result = await io.race([
+      async () => {
+        await io.sleep(5);
+        return "fast";
+      },
+      async () => {
+        defer(() => cleaned.push("slow cleaned"));
+        await io.sleep(1000);
+        return "slow";
+      },
+    ]);
+    expect(result).toBe("fast");
+    expect(cleaned).toEqual(["slow cleaned"]);
+  });
+
+  test("io.allSettled reports a raw body rejection per member", async () => {
+    const boom = new Error("boom");
+    const result = await io.allSettled([
+      async () => "ok",
+      async () => {
+        throw boom;
+      },
+    ]);
+    expect(result[0]).toEqual({ status: "fulfilled", value: "ok" });
+    expect((result[1] as PromiseRejectedResult).reason).toBe(boom);
+  });
+
+  test("io.spawn accepts a single raw body and can be awaited", async () => {
+    const result = await io.spawn(async () => {
+      await io.sleep(2);
+      return 42;
+    });
+    expect(result).toBe(42);
+  });
+
+  test("io.spawn accepts a list of raw bodies", async () => {
+    const result = await io.spawn([async () => 1, async () => 2]);
+    expect(result).toEqual([1, 2]);
+  });
+
+  test("a spawned raw body is torn down when the enclosing coroutine exits", async () => {
+    const cleaned: string[] = [];
+    await io
+      .coroutine(async () => {
+        io.spawn(async () => {
+          defer(() => cleaned.push("bg"));
+          await io.sleep(1000); // would outlive the parent if not torn down
+        });
+        await io.sleep(5); // let the spawned task park, then exit
+      })
+      .spawn();
+    expect(cleaned).toEqual(["bg"]);
+  });
+
+  test("a RoutineHandle is rejected at the type level", () => {
+    // Never invoked: exists only so tsc checks the assignability.
+    const typeOnly = (handle: RoutineHandle<number>) => {
+      // @ts-expect-error a running handle is not a CoroutineLike - ownership stays with the spawner
+      io.all([handle]);
+      // @ts-expect-error a running handle is not a CoroutineLike - ownership stays with the spawner
+      io.spawn(handle);
+    };
+    expect(typeof typeOnly).toBe("function");
   });
 });
 

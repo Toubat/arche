@@ -17,6 +17,14 @@ export interface Ctx {
 
 export type CoroutineBody<T> = () => Promise<T>;
 
+/**
+ * Anything a combinator (`io.all` / `io.race` / `io.allSettled` / `io.spawn`) can
+ * own and run: an inert coroutine, or a bare async body that is wrapped in
+ * `io.coroutine` internally and spawned under the combinator's scope. A running
+ * `RoutineHandle` is deliberately excluded - ownership stays with its spawner.
+ */
+export type CoroutineLike<T> = Coroutine<T> | CoroutineBody<T>;
+
 export type DeferCallback = () => unknown | Promise<unknown>;
 
 export interface SpawnOptions {
@@ -108,8 +116,18 @@ export interface WaitGroup {
   readonly count: number;
 }
 
-/** An inert, one-shot, non-thenable coroutine specification. */
+/**
+ * Runtime brand carried by every object minted by `io.coroutine`. Combinators use
+ * it to discriminate a `CoroutineLike` nominally (branded coroutine vs bare async
+ * body) instead of guessing from shape. Registered via `Symbol.for` so duplicate
+ * copies of this library agree on the brand.
+ */
+export const COROUTINE: unique symbol = Symbol.for("@arche/concurrency.coroutine");
+
+/** An inert, one-shot, non-thenable coroutine specification. Minted by `io.coroutine`. */
 export interface Coroutine<T> {
+  /** Nominal brand: only `io.coroutine` mints coroutines. */
+  readonly [COROUTINE]: true;
   /** Start the coroutine exactly once. A second call throws `CoroutineAlreadyStartedError`. */
   spawn(opts?: SpawnOptions): RoutineHandle<T>;
 }

@@ -1,7 +1,14 @@
 import { CancelledError, CoroutineAlreadyStartedError } from "./errors";
 import { log } from "./log";
 import { currentScope, makeCtx, rootScope, runInScope, type Scope } from "./scope";
-import type { Coroutine, CoroutineBody, DeferCallback, RoutineHandle, SpawnOptions } from "./types";
+import {
+  COROUTINE,
+  type Coroutine,
+  type CoroutineBody,
+  type DeferCallback,
+  type RoutineHandle,
+  type SpawnOptions,
+} from "./types";
 
 const DEFAULT_CANCEL_TIMEOUT_MS = 5000;
 const DEFAULT_DEFER_TIMEOUT_MS = 5000;
@@ -197,6 +204,7 @@ class RoutineHandleImpl<T> implements RoutineHandle<T> {
 }
 
 class CoroutineImpl<T> implements Coroutine<T> {
+  readonly [COROUTINE] = true as const;
   readonly #body: CoroutineBody<T>;
   #started = false;
 

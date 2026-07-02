@@ -1,6 +1,6 @@
 # @arche/concurrency — design, semantics & status
 
-- date: 2026-06-26 (updated 2026-06-27: Milestone 2 done; + `io.background`→`io.spawn`, strict blocking-op short-circuit)
+- date: 2026-06-26 (updated 2026-06-27: Milestone 2 done; + `io.background`→`io.spawn`, strict blocking-op short-circuit. Updated 2026-07-02: `CoroutineLike<T>` landed)
 - source: design session + TDD build + edge-case hardening + Milestone 2 (verified: 121 tests, 100% LINE coverage, tsc + biome clean)
 - status: verified — Milestone 1 (core) + Milestone 2 (combinators + data structures) complete
 
@@ -178,7 +178,18 @@ jitter=true (full jitter), shouldRetry, onRetry }`. **CancelledError is never
   **non-cancellation** failure logs `{ code: "spawn_error" }` instead of an unhandled
   rejection; CancelledError (normal teardown) is NOT logged. Distinct from
   `coro.spawn()` (low-level start): `io.spawn` adds the unobserved-error logger.
-  Bare-async-body axis (`() => Promise<T>`) is still TODO (post-union).
+- **`CoroutineLike<T>` (landed 2026-07-02)** — `Coroutine<T> | CoroutineBody<T>`
+  named union in `types.ts`, exported from index. `io.all`/`io.race`/`io.allSettled`/
+  `io.spawn` (both forms) accept it; a bare async body is normalized via a private
+  `toCoroutine()` in `combinators.ts` (discriminated by the **nominal `COROUTINE`
+  brand** — `Symbol.for("@arche/concurrency.coroutine")`, defined in `types.ts`, on
+  the `Coroutine` interface, set by `CoroutineImpl`, exported from index; replaced
+  the earlier `typeof like === "function"` shape check on user request 2026-07-02),
+  so it spawns under the combinator's scope like any other member (teardown/cancel
+  semantics identical — tests pin fail-fast, race loser teardown, cancel, and
+  parent-exit teardown for raw bodies). `RoutineHandle` stays excluded at the type
+  level (no `spawn`, not callable) — pinned by `@ts-expect-error` tests.
+  `withTimeout`/`withRetry` deliberately NOT widened yet (design decision pending).
 - `io.future<T>()` — externally `resolve`/`reject`, write-once (later settles are
   no-ops), thenable. **Cancellation is intrinsic and bound to the CREATING
   coroutine** (captures the scope signal at construction; on abort rejects itself
@@ -219,12 +230,53 @@ jitter=true (full jitter), shouldRetry, onRetry }`. **CancelledError is never
 cancelled waiter splices itself out so a later `wakeOne` is never handed to an
 abandoned waiter; waiters can carry a payload (channel sender's value).
 
-## Test status (verified 2026-06-27)
+## Test status (verified 2026-07-02)
 
-- **121 tests; 100% LINE coverage** across all files; tsc `--noEmit` clean; biome clean.
+- **140 tests; 100% LINE coverage** across all files; tsc `--noEmit` clean; biome clean.
   (+strict blocking-op short-circuit tests for channel/semaphore/waitGroup, channel
-  multi-consumer partition + mid-cancel union tests, `io.spawn` single+list tests —
+  multi-consumer partition + mid-cancel union tests, `io.spawn` single+list tests,
+  `CoroutineLike` raw-body tests (9: success/fail-fast/cancel/race-teardown/
+  allSettled/spawn-single/spawn-list/parent-exit-teardown/type-level-RoutineHandle) —
   all written RED-first per TDD.)
+- **Nested background teardown pinned (2026-07-02, `nested.test.ts`)**: a background
+  child that itself backgrounds a grandchild is torn down **transitively** — on normal
+  parent exit AND on `handle.cancel()` — leaf-first (grandchild → child → parent
+  defers), and the awaited parent handle does not settle until the grandchild's
+  **async** defer completes. Characterization tests (passed immediately — behavior
+  falls out of ALS scope parenting + `teardownChildren`); strict ordered-array asserts.
+- **Zombie reaping across the tree pinned (2026-07-02, `graceful.test.ts`)**: a body
+  frozen on a raw never-resolving promise never blocks shutdown. "Zombie" = the reaper
+  timer settles the handle's EXTERNAL promise (`CancelledError` + `coroutine_hung` warn)
+  and abandons the still-pending body; no registry, and the zombie's own defers never
+  run (unreachable — body never unwinds). Pinned: (1) killing a parent with a frozen
+  background child — responsive sibling's defer + parent's defers still run, exit
+  bounded; (2) frozen grandchild can't block the top-level parent (pins the
+  `coroutine.ts` teardownChildren comment); (3) killing a parent that is AWAITING a
+  frozen child — the child never gets its own reaper (scope aborts via parent, but
+  `handle.cancel()` was never called on it), so the PARENT's reaper is what settles
+  the caller and the whole subtree is abandoned.
+- **Raw frozen `await new Promise(() => {})` semantics pinned (2026-07-02,
+  `graceful.test.ts`)**: (1) with NO cancellation there is no implicit deadline —
+  the handle just stays pending; (2) the abort signal is invisible to a raw await
+  (unlike `io.sleep`, nothing re-raises), so the cancelled body stays parked and its
+  defers are unreachable while parked; (3) if the promise later resolves (slow, not
+  truly frozen), the abandoned body resumes and its defers DO run — late, detached
+  from any caller — but the outcome is discarded (external already settled
+  `CancelledError` by the reaper; cancellation-wins also rewrites the late success).
+  This refines the earlier "zombie defers never run": never = only while parked.
+- **Fake timers (2026-07-02)**: `graceful.test.ts` runs entirely on `jest.useFakeTimers()`
+  from `bun:test`. Verified facts (Bun 1.3.14): `useFakeTimers`/`advanceTimersByTime`/
+  `runAllTimers`/`runOnlyPendingTimers` exist and patch the library's internal
+  `setTimeout`s; the async variants (`advanceTimersByTimeAsync`) do NOT exist;
+  `setImmediate` is NOT faked, so `await new Promise(r => setImmediate(r))` is the
+  flush primitive. Pattern (helpers in graceful.test.ts): `advance(ms)` = flush →
+  `advanceTimersByTime(ms)` → flush (the leading flush lets cancel-unwind microtask
+  chains register their timers before advancing); `stateOf(p)` = race p vs flush for
+  a non-blocking settled/pending probe. Gains: DEFAULT 5000ms budgets now exercised
+  (previously always overridden to 20-30ms), exact reap boundary pinned (pending at
+  4999ms, settled at 5000ms), "no implicit deadline" pinned across a fake hour.
+  GOTCHA: attach the rejection observer (`caught(handle)`) BEFORE `advance()`, else
+  the reaper's rejection fires unobserved mid-advance and bun fails the test.
 - Func coverage shows ~98% only due to a **bun attribution quirk**: event-listener
   arrows (`onAbort` in `waiters.ts`) and getters/default-params bun won't credit as
   "hit" even though they ARE executed (proven by explicit cancellation tests asserting
@@ -236,13 +288,17 @@ abandoned waiter; waiters can carry a payload (channel sender's value).
 
 ## Open follow-ups (post-Milestone-2)
 
-- **Combinators accept bare bodies**: `Coroutine<T> | (() => Promise<T>)` named union
-  (`CoroutineLike<T>`) for `all`/`race`/`allSettled`/`spawn` to cut boilerplate.
-  Keep Coroutine-only ownership; do NOT accept `RoutineHandle` (already-parented).
-  NOTE `io.spawn` already accepts a single `Coroutine` or a list; only the bare-body
-  axis remains.
+- **`CoroutineLike` for `withTimeout`/`withRetry`**: `withTimeout(ms, body)` could take
+  a bare body; `withRetry` stays factory-based (one-shot coroutines need fresh work per
+  attempt) but the factory could return `CoroutineLike<T>`. Design decision + tests first.
 - `io.any` (first to resolve), pub/sub broadcast, nursery/group object, context
   values, absolute-time deadline, generic unobserved-error logging for bare `.spawn()`.
+- **Equal reap budgets nuance (analysis only, NOT tested)**: if a parent and its hung
+  child both use the same cancelTimeout, the parent's reaper timer is registered first
+  (at `cancel()`) and fires first — the parent gets spuriously `coroutine_hung`-reaped
+  while its bounded teardown is still mid-flight. Graceful chains implicitly rely on
+  child budget < parent budget. Decide whether to document, restart the parent's
+  reaper when teardown begins, or leave as-is.
 - `Ctx.name` still always `undefined` (never wired to `SpawnOptions`).
 
 ## Research references (for cancellation design)
