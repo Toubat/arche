@@ -1,0 +1,139 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "31af3483845f",
+  "session_id": "1f8c46f3-6c41-4b36-8c4d-191ee3b89838",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-02T07:38:29.002158Z",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "save_step_count": 7,
+  "files_touched": [
+    ".memory/2026-06-26-concurrency-library.md",
+    "packages/concurrency/DESIGN.md",
+    "packages/concurrency/src/combinators.test.ts",
+    "packages/concurrency/src/combinators.ts",
+    "packages/concurrency/src/coroutine.test.ts",
+    "packages/concurrency/src/coroutine.ts",
+    "packages/concurrency/src/graceful.test.ts",
+    "packages/concurrency/src/index.ts",
+    "packages/concurrency/src/nested.test.ts",
+    "packages/concurrency/src/types.ts"
+  ],
+  "agent": "Cursor",
+  "model": "claude-fable-5-thinking-high",
+  "turn_id": "f8c83489d953",
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-02T07:38:28.998573Z",
+    "agent_lines": 84,
+    "agent_removed": 0,
+    "human_added": 86,
+    "human_modified": 98,
+    "human_removed": 0,
+    "total_committed": 268,
+    "total_lines_changed": 268,
+    "agent_percentage": 31.343283582089555,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 174,
+      "user_lines_removed": 37,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 10,
+        "packages/concurrency/DESIGN.md": 12,
+        "packages/concurrency/src/combinators.test.ts": 111,
+        "packages/concurrency/src/combinators.ts": 32,
+        "packages/concurrency/src/index.ts": 1,
+        "packages/concurrency/src/types.ts": 8
+      },
+      "user_removed_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 2,
+        "packages/concurrency/DESIGN.md": 7,
+        "packages/concurrency/src/combinators.ts": 28
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 3,
+      "user_lines_removed": 5,
+      "agent_lines_added": 179,
+      "agent_lines_removed": 40,
+      "user_added_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 3
+      },
+      "user_removed_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 5
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 64,
+      "user_lines_removed": 0,
+      "agent_lines_added": 345,
+      "agent_lines_removed": 45,
+      "user_added_per_file": {
+        "packages/concurrency/src/graceful.test.ts": 64
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 34,
+      "user_lines_removed": 9,
+      "agent_lines_added": 430,
+      "agent_lines_removed": 47,
+      "user_added_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 5,
+        "packages/concurrency/DESIGN.md": 8,
+        "packages/concurrency/src/combinators.ts": 11,
+        "packages/concurrency/src/coroutine.ts": 9,
+        "packages/concurrency/src/index.ts": 1
+      },
+      "user_removed_per_file": {
+        ".memory/2026-06-26-concurrency-library.md": 2,
+        "packages/concurrency/DESIGN.md": 3,
+        "packages/concurrency/src/combinators.ts": 3,
+        "packages/concurrency/src/coroutine.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 466,
+      "agent_lines_removed": 49
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 83,
+      "user_lines_removed": 47,
+      "agent_lines_added": 466,
+      "agent_lines_removed": 49,
+      "user_added_per_file": {
+        "packages/concurrency/src/graceful.test.ts": 83
+      },
+      "user_removed_per_file": {
+        "packages/concurrency/src/graceful.test.ts": 47
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 540,
+      "agent_lines_removed": 66
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 540,
+      "agent_lines_removed": 66
+    }
+  ]
+}

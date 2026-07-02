@@ -1,0 +1,45 @@
+Read https://arxiv.org/pdf/2511.00592
+
+---
+
+Read https://arxiv.org/pdf/2511.00592
+
+---
+
+Read https://arxiv.org/pdf/2511.00592
+
+---
+
+can durable object running on its own? even without external connection? Like I want to start a loop that does an api call every 20 s
+
+---
+
+can durable object running on its own? even without external connection? Like I want to start a loop that does an api call every 20 s
+
+---
+
+what is hibernation?
+
+---
+
+what is hibernation?
+
+---
+
+So for coding agent, it is not recommanded t use DOs since I want even when no clients connection it should still run?
+
+---
+
+compare pricing for cloudflare DOs and modal sandbox
+
+---
+
+compare pricing for cloudflare DOs and modal sandbox
+
+---
+
+show me @arche/apps/durable-objects , how to make a DO keep persists
+
+---
+
+show me @arche/apps/durable-objects , how to make a DO keep persists

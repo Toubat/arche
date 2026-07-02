@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.7",
+  "checkpoint_id": "31af3483845f",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "files_touched": [
+    ".memory/2026-06-26-concurrency-library.md",
+    "packages/concurrency/DESIGN.md",
+    "packages/concurrency/src/combinators.test.ts",
+    "packages/concurrency/src/combinators.ts",
+    "packages/concurrency/src/coroutine.test.ts",
+    "packages/concurrency/src/coroutine.ts",
+    "packages/concurrency/src/graceful.test.ts",
+    "packages/concurrency/src/index.ts",
+    "packages/concurrency/src/nested.test.ts",
+    "packages/concurrency/src/types.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/31/af3483845f/0/metadata.json",
+      "transcript": "/31/af3483845f/0/full.jsonl",
+      "content_hash": "/31/af3483845f/0/content_hash.txt",
+      "prompt": "/31/af3483845f/0/prompt.txt"
+    }
+  ]
+}
