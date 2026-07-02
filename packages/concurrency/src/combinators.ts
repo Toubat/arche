@@ -33,15 +33,23 @@ export function spawn<T>(
   arg: Coroutine<T> | Coroutine<T>[],
 ): RoutineHandle<T> | RoutineHandle<T[]> {
   const handle = Array.isArray(arg) ? all(arg) : arg.spawn();
-  void Promise.resolve(handle).catch((error) => {
-    // Cancellation is the normal teardown path when the parent scope exits.
+  void logIfUnobserved(handle);
+  return handle;
+}
+
+// Surface a fire-and-forget failure to the log instead of letting it become an
+// unhandled rejection. Cancellation is the normal teardown path when the parent
+// scope exits, so it is not logged.
+async function logIfUnobserved(handle: PromiseLike<unknown>): Promise<void> {
+  try {
+    await handle;
+  } catch (error) {
     if (error instanceof CancelledError) return;
     log.error("unhandled error in spawned coroutine(s)", {
       code: "spawn_error",
       error: error instanceof Error ? error.message : String(error),
     });
-  });
-  return handle;
+  }
 }
 
 /**

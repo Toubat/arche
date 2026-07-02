@@ -37,11 +37,10 @@ class ChannelImpl<T> implements Channel<T> {
     return this.#senders.wait(value);
   }
 
-  receive(): Promise<T> {
-    return this.#receive().then((result) => {
-      if (result.done) throw new ChannelClosedError();
-      return result.value;
-    });
+  async receive(): Promise<T> {
+    const result = await this.#receive();
+    if (result.done) throw new ChannelClosedError();
+    return result.value;
   }
 
   close(): void {

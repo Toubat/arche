@@ -14,16 +14,17 @@ class SemaphoreImpl implements Semaphore {
     return this.#permits;
   }
 
-  acquire(): Promise<() => void> {
+  async acquire(): Promise<() => void> {
     // Cancellation short-circuit: an aborted scope must not take a free permit.
     const cancelled = rejectIfCancelled();
     if (cancelled) return cancelled;
     if (this.#permits > 0) {
       this.#permits--;
-      return Promise.resolve(this.#release());
+      return this.#release();
     }
     // No permit free: park (cancellably). When woken, a permit was handed to us.
-    return this.#waiters.wait(undefined).then(() => this.#release());
+    await this.#waiters.wait(undefined);
+    return this.#release();
   }
 
   async runExclusive<T>(fn: () => T | Promise<T>): Promise<T> {
